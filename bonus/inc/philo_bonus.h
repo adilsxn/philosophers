@@ -13,18 +13,14 @@
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
-# include <fcntl.h>
 # include <pthread.h>
-# include <semaphore.h>
-# include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <sys/wait.h>
 # include <unistd.h>
-
-# define MAX_PHILO 200
+# include <semaphore.h>
+# include <fcntl.h>
 
 typedef struct s_philo
 {
@@ -48,10 +44,8 @@ typedef struct s_etiquette
 	bool				all_fed;
 	int					total_meals;
 	long long			start_time;
-	sem_t				*forks;
-	sem_t				*logs;
-	sem_t				*meals;
-	t_philo				philos[MAX_PHILO];
+	sem_t		*forks;
+	t_philo				**philos;
 }						t_etiquette;
 /**/
 typedef enum e_ph_status
@@ -69,8 +63,7 @@ int						argparser(int argc, char *av[]);
 /*@brief initializes the main 
  * structures used by the program*/
 int						set_table(t_etiquette *e, char *argv[], int argc);
-/*@brief Creates and joins the threads
-int	create_proc(t_etiquette *e); */
+/*@brief Creates and joins the threads*/
 int						banquet(t_etiquette *e);
 /*@brif Destroy the mutexes and free any 
  * allocated structures or arrays*/
@@ -78,8 +71,9 @@ int						laundry(t_etiquette *e);
 /*@brief Routine for the dead of full
  checker responsible fot checking if the philosophers
  are dead or full*/
+int						dth_chck(t_etiquette *e);
 void					*checker(void *arg);
-int						strt_rtn(t_philo *p_arg, t_etiquette *e_arg);
+void					*strt_rtn(void *arg);
 
 /*-----------ACTIONS-----------------------*/
 /* @brief entire lifetime of philosophers
@@ -87,8 +81,8 @@ int						strt_rtn(t_philo *p_arg, t_etiquette *e_arg);
 void					life(t_philo *p, t_etiquette *e);
 int						death(t_philo *p, t_etiquette *e);
 /*@brief Routine to delay the of threads with even id's */
-void					delayed_start(t_philo *p);
-int						solo_dolo(t_etiquette *e, t_philo *p);
+void	delayed_start(t_philo *p); 
+void					*solo_dolo(t_etiquette *e, t_philo *p);
 /*-----------------UTILS--------------------*/
 /*@brief Converts the string received 
  * if numeric to to numeric format type*/

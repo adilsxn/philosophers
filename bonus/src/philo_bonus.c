@@ -11,7 +11,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo_bonus.h"
+#include "../inc/philo.h"
 
 int	main(int argc, char *argv[])
 {
@@ -23,5 +23,7 @@ int	main(int argc, char *argv[])
 		return (2);
 	if (banquet(&e))
 		return (laundry(&e), 3);
+	if (laundry(&e))
+		return (4);
 	return (0);
 }

@@ -12,10 +12,14 @@
 /* ************************************************************************** */
 
 #include "../inc/philo_bonus.h"
+#include <semaphore.h>
 
 static int	init_etiq(t_etiquette *e, char **av, int ac)
 {
 	e->nb_philo = ft_atoi(av[1]);
+	e->philos = (t_philo **)malloc(sizeof(t_philo *) * e->nb_philo);
+	if (!e->forks || !e->philos)
+		return (1);
 	e->time_to_die = ft_atoi(av[2]);
 	e->time_to_eat = ft_atoi(av[3]);
 	e->time_to_sleep = ft_atoi(av[4]);
@@ -29,36 +33,36 @@ static int	init_etiq(t_etiquette *e, char **av, int ac)
 	return (0);
 }
 
-static int	init_sem(t_etiquette *e)
+static int	init_mtx(t_etiquette *e)
 {
+	int	i;
+
 	if (!e)
 		return (1);
 	sem_unlink("/forks");
-	sem_unlink("/logs");
-	sem_unlink("/meals");
 	e->forks = sem_open("/forks", O_CREAT, 0644, e->nb_philo);
-	e->logs = sem_open("/logs", O_CREAT, 0644, 1);
-	e->meals = sem_open("/meals", O_CREAT, 0644, 1);
-	if (e->forks == SEM_FAILED || e->logs == SEM_FAILED
-		|| e->meals == SEM_FAILED)
-		return (1);
 	return (0);
 }
 
 static int	init_phil(t_etiquette *e)
 {
-	int	i;
+	int		i;
+	t_philo	*p;
 
 	if (!e)
 		return (1);
 	i = e->nb_philo;
 	while (--i >= 0)
 	{
-		e->philos[i].id = i;
-		e->philos[i].full = 0;
-		e->philos[i].nb_meals = 0;
-		e->philos[i].meal_time = e->start_time;
-		e->philos[i].rules = e;
+		p = (t_philo *)malloc(sizeof(t_philo));
+		if (!p)
+			return (2);
+		p->id = i;
+		p->full = 0;
+		p->nb_meals = 0;
+		p->meal_time = e->start_time;
+		p->rules = e;
+		e->philos[i] = p;
 	}
 	return (0);
 }
@@ -69,7 +73,7 @@ int	set_table(t_etiquette *e, char **av, int ac)
 		return (1);
 	if (init_phil(e))
 		return (printf("Error: initiating philosophers"), 3);
-	if (init_sem(e))
+	if (init_mtx(e))
 		return (printf("Error: initiating the mutexes"), 4);
 	return (0);
 }

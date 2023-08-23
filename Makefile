@@ -15,9 +15,9 @@ SRCS       = mandatory/src/banquet.c mandatory/src/utils.c            \
 						 mandatory/src/set_table.c mandatory/src/actions.c        \
 						 mandatory/src/argparser.c mandatory/src/philo.c          \
 						 mandatory/src/routines.c
-B_SRC      = bonus/src/set_table_bonus.c bonus/src/utils_bonus.c       \
-             bonus/src/philo_bonus.c bonus/src/argparser_bonus.c       \
-						 bonus/src/banquet_bonus.c bonus/src/actions_bonus.c       
+B_SRC       = bonus/src/banquet_bonus.c bonus/src/utils_bonus.c  bonus/src/set_table_bonus.c  \
+			  bonus/src/actions_bonus.c bonus/src/argparser_bonus.c bonus/src/philo_bonus.c    \
+			  bonus/src/routines_bonus.c
 
 OBJS       = ${SRCS:mandatory/src/%.c=$(OBJ_DIR)/%.o}
 B_OBJS     = ${B_SRC:bonus/src/%.c=$(B_OBJ_DIR)/%.o}

@@ -12,26 +12,23 @@
 
 #include "../inc/philo_bonus.h"
 
-static int	create_proc(t_etiquette *e)
+*TODO: Create create_proc func and wait_proc;
+*TODO: Rewrite the death_checker func to work for individual functions with help of full variable;
+
+static int	create_threads(t_etiquette *e)
 {
 	int	i;
 
-	e->start_time = get_timestamp();
 	i = -1;
+	e->start_time = get_timestamp();
 	while (++i < e->nb_philo)
 	{
-		e->philos[i].pid = fork();
-		if (e->philos[i].pid < 0)
-			return (printf("Error while creating process\n"), 1);
-		if (e->philos[i].pid == 0)
-			strt_rtn(&e->philos[i], e);
-		usleep(100);
+		if ()
 	}
-	laundry(e);
 	return (0);
 }
 
-int	laundry(t_etiquette *e)
+static int	join_threads(t_etiquette *e)
 {
 	int	i;
 	int	sts;
@@ -39,27 +36,36 @@ int	laundry(t_etiquette *e)
 	i = -1;
 	while (++i < e->nb_philo)
 	{
-		waitpid(-1, &sts, 0);
-		if (sts != 0)
-		{
-			i = -1;
-			while (++i < e->nb_philo)
-				kill(e->philos[i].pid, 15);
-			break ;
-		}
+		sts = pthread_join(e->philos[i]->thread, NULL);
+		if (sts)
+			return (sts);
+	}
+	sts = pthread_join(e->checker, NULL);
+	return (sts);
+}
+
+int	laundry(t_etiquette *e)
+{
+	int	i;
+
+	i = -1;
+	if (!e)
+		return (1);
+	while (++i < e->nb_philo)
+	{
+		free(e->philos[i]);
 	}
 	sem_close(e->forks);
-	sem_close(e->logs);
-	sem_close(e->meals);
 	sem_unlink("/forks");
-	sem_unlink("/logs");
-	sem_unlink("/meals");
+	free(e->philos);
 	return (0);
 }
 
 int	banquet(t_etiquette *e)
 {
-	if (create_proc(e))
+	if (create_threads(e))
 		return (printf("Error while creating threads"), 1);
+	if (join_threads(e))
+		return (printf("Error while joining threads"), 2);
 	return (0);
 }
