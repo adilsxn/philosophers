@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "-I",
+      "./mandatory/inc/",
+      "-o",
+      "build/obj/banquet.o",
+      "mandatory/src/banquet.c"
+    ],
+    "directory": "/home/homeaway/philosophers",
+    "file": "/home/homeaway/philosophers/mandatory/src/banquet.c",
+    "output": "/home/homeaway/philosophers/build/obj/banquet.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "-I",
+      "./mandatory/inc/",
+      "-o",
+      "build/obj/utils.o",
+      "mandatory/src/utils.c"
+    ],
+    "directory": "/home/homeaway/philosophers",
+    "file": "/home/homeaway/philosophers/mandatory/src/utils.c",
+    "output": "/home/homeaway/philosophers/build/obj/utils.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "-I",
+      "./mandatory/inc/",
+      "-o",
+      "build/obj/set_table.o",
+      "mandatory/src/set_table.c"
+    ],
+    "directory": "/home/homeaway/philosophers",
+    "file": "/home/homeaway/philosophers/mandatory/src/set_table.c",
+    "output": "/home/homeaway/philosophers/build/obj/set_table.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "-I",
+      "./mandatory/inc/",
+      "-o",
+      "build/obj/actions.o",
+      "mandatory/src/actions.c"
+    ],
+    "directory": "/home/homeaway/philosophers",
+    "file": "/home/homeaway/philosophers/mandatory/src/actions.c",
+    "output": "/home/homeaway/philosophers/build/obj/actions.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "-I",
+      "./mandatory/inc/",
+      "-o",
+      "build/obj/argparser.o",
+      "mandatory/src/argparser.c"
+    ],
+    "directory": "/home/homeaway/philosophers",
+    "file": "/home/homeaway/philosophers/mandatory/src/argparser.c",
+    "output": "/home/homeaway/philosophers/build/obj/argparser.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "-I",
+      "./mandatory/inc/",
+      "-o",
+      "build/obj/philo.o",
+      "mandatory/src/philo.c"
+    ],
+    "directory": "/home/homeaway/philosophers",
+    "file": "/home/homeaway/philosophers/mandatory/src/philo.c",
+    "output": "/home/homeaway/philosophers/build/obj/philo.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "-I",
+      "./mandatory/inc/",
+      "-o",
+      "build/obj/routines.o",
+      "mandatory/src/routines.c"
+    ],
+    "directory": "/home/homeaway/philosophers",
+    "file": "/home/homeaway/philosophers/mandatory/src/routines.c",
+    "output": "/home/homeaway/philosophers/build/obj/routines.o"
+  }
+]

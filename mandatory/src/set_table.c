@@ -23,13 +23,13 @@ static int	init_etiq(t_etiquette *e, char **av, int ac)
 	e->time_to_die = ft_atoi(av[2]);
 	e->time_to_eat = ft_atoi(av[3]);
 	e->time_to_sleep = ft_atoi(av[4]);
-	e->nb_they_can_eat = -1;
+	e->must_eat = -1;
 	e->all_fed = 0;
 	e->all_alive = 1;
 	e->total_meals = 0;
 	e->start_time = get_timestamp();
 	if (ac == 6)
-		e->nb_they_can_eat = ft_atoi(av[5]);
+		e->must_eat = ft_atoi(av[5]);
 	return (0);
 }
 

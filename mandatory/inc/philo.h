@@ -39,7 +39,7 @@ typedef struct s_etiquette
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
-	int					nb_they_can_eat;
+	int					must_eat;
 	bool				all_alive;
 	bool				all_fed;
 	int					total_meals;

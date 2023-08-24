@@ -37,7 +37,7 @@ int	dth_chck(t_etiquette *e)
 	{
 		if (death(e->philos[i], e))
 			return (1);
-		if (e->philos[i]->nb_meals == e->nb_they_can_eat && !e->philos[i]->full)
+		if (e->philos[i]->nb_meals == e->must_eat && !e->philos[i]->full)
 		{
 			e->total_meals++;
 			e->philos[i]->full = 1;
