@@ -20,7 +20,7 @@ static int	create_threads(t_etiquette *e)
 	e->start_time = get_timestamp();
 	while (++i < e->nb_philo)
 	{
-		if (pthread_create(&e->philos[i]->thread, NULL, strt_rtn, e->philos[i]))
+		if (pthread_create(&e->philos[i].thread, NULL, strt_rtn, &e->philos[i]))
 			return (1);
 	}
 	if (pthread_create(&e->checker, NULL, checker, e))
@@ -36,7 +36,7 @@ static int	join_threads(t_etiquette *e)
 	i = -1;
 	while (++i < e->nb_philo)
 	{
-		sts = pthread_join(e->philos[i]->thread, NULL);
+		sts = pthread_join(e->philos[i].thread, NULL);
 		if (sts)
 			return (sts);
 	}
@@ -54,7 +54,6 @@ int	laundry(t_etiquette *e)
 	while (++i < e->nb_philo)
 	{
 		pthread_mutex_destroy(&e->forks[i]);
-		free(e->philos[i]);
 	}
 	free(e->philos);
 	free(e->forks);

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
-#include <unistd.h>
 
 void	*strt_rtn(void *arg)
 {
@@ -20,44 +19,60 @@ void	*strt_rtn(void *arg)
 
 	p = (t_philo *)arg;
 	e = p->rules;
-	if (e->nb_philo == 1)
-		return (solo_dolo(e, p));
 	delayed_start(p);
-	while (e->all_alive && e->total_meals != e->nb_philo)
+	while (e->all_alive && !e->all_fed)
 		life(p, e);
-	return (NULL);
+	return (NULL); 
 }
 
 int	dth_chck(t_etiquette *e)
 {
 	int	i;
+	t_philo *p;
 
-	i = -1;
-	while (++i < e->nb_philo)
+	p = e->philos;
+	while(!e->all_fed)
 	{
-		if (death(e->philos[i], e))
-			return (1);
-		if (e->philos[i]->nb_meals == e->must_eat && !e->philos[i]->full)
+		i = -1;
+		while (++i < e->nb_philo && e->all_alive)
 		{
-			e->total_meals++;
-			e->philos[i]->full = 1;
+			if (death(&p[i], e))
+			usleep(100);
 		}
-		if (e->total_meals == e->nb_philo)
-			return (1);
+		if (!e->all_alive)
+			break ;
+		i = 0;
+		while (e->must_eat != -1 && i < e->nb_philo &&
+			p[i].nb_meals >= e->must_eat)
+			i++;
+		if (i == e->must_eat)
+		    e->all_fed = 1;
 	}
 	return (0);
 }
 
 void	*checker(void *arg)
 {
+	int i;
+	t_philo *p;
 	t_etiquette	*e;
 
 	e = (t_etiquette *)arg;
-	while (e->all_alive)
+	p = e->philos;
+	while(!e->all_fed)
 	{
-		if (dth_chck(e))
+		i = -1;
+		while (++i < e->nb_philo && e->all_alive)
+			if (death(&p[i], e))
+				usleep(100);
+		if (!e->all_alive)
 			break ;
-		usleep(1200);
+		i = 0;
+		while (e->must_eat != -1 && i < e->nb_philo &&
+			p[i].nb_meals >= e->must_eat)
+			i++;
+		if (i == e->must_eat)
+		    e->all_fed = 1;
 	}
 	return (NULL);
 }

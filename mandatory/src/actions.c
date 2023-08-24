@@ -16,6 +16,8 @@ void	life(t_philo *p, t_etiquette *e)
 {
 	pthread_mutex_lock(p->left_fork);
 	log_status(p, e, FORK);
+	if (e->nb_philo == 1)
+		solo_dolo(e, p);
 	pthread_mutex_lock(p->right_fork);
 	log_status(p, e, FORK);
 	p->meal_time = get_timestamp();

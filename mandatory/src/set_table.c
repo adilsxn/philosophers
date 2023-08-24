@@ -17,7 +17,7 @@ static int	init_etiq(t_etiquette *e, char **av, int ac)
 {
 	e->nb_philo = ft_atoi(av[1]);
 	e->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * e->nb_philo);
-	e->philos = (t_philo **)malloc(sizeof(t_philo *) * e->nb_philo);
+	e->philos = (t_philo *)malloc(sizeof(t_philo) * e->nb_philo);
 	if (!e->forks || !e->philos)
 		return (1);
 	e->time_to_die = ft_atoi(av[2]);
@@ -51,25 +51,20 @@ static int	init_mtx(t_etiquette *e)
 static int	init_phil(t_etiquette *e)
 {
 	int		i;
-	t_philo	*p;
 
 	if (!e)
 		return (1);
 	i = e->nb_philo;
 	while (--i >= 0)
 	{
-		p = (t_philo *)malloc(sizeof(t_philo));
-		if (!p)
-			return (2);
-		p->id = i;
-		p->full = 0;
-		p->nb_meals = 0;
-		p->thread = 0;
-		p->left_fork = e->forks + i;
-		p->right_fork = e->forks + ((i + 1) % e->nb_philo);
-		p->meal_time = e->start_time;
-		p->rules = e;
-		e->philos[i] = p;
+		e->philos[i].id = i;
+		e->philos[i].full = 0;
+		e->philos[i].nb_meals = 0;
+		e->philos[i].thread = 0;
+		e->philos[i].left_fork = e->forks + i;
+		e->philos[i].right_fork = e->forks + ((i + 1) % e->nb_philo);
+		e->philos[i].meal_time = e->start_time;
+		e->philos[i].rules = e;
 	}
 	return (0);
 }

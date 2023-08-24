@@ -12,6 +12,7 @@
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <unistd.h>
 
 int	ft_atoi(const char *str)
 {
@@ -64,7 +65,6 @@ static char	*get_status(t_ph_status status)
 
 void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
 {
-
 	if (e->all_alive)
 	{
 		printf("[%4lld]ms %i %s\n", (get_timestamp() - e->start_time), (p->id
@@ -72,12 +72,11 @@ void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
 	}
 }
 
-void	*solo_dolo(t_etiquette *e, t_philo *p)
+void	solo_dolo(t_etiquette *e, t_philo *p)
 {
-	pthread_mutex_lock(p->left_fork);
-	log_status(p, e, FORK);
-	pthread_mutex_unlock(p->right_fork);
+	usleep(e->time_to_die * 1000);
 	log_status(p, e, DEAD);
+	pthread_mutex_unlock(p->left_fork);
 	e->all_alive = 0;
-	return (NULL);
+	return ;
 }

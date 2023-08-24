@@ -46,7 +46,7 @@ typedef struct s_etiquette
 	pthread_t			checker;
 	long long			start_time;
 	pthread_mutex_t		*forks;
-	t_philo				**philos;
+	t_philo				*philos;
 }						t_etiquette;
 /**/
 typedef enum e_ph_status
@@ -83,7 +83,7 @@ void					life(t_philo *p, t_etiquette *e);
 int						death(t_philo *p, t_etiquette *e);
 /*@brief Routine to delay the of threads with even id's */
 void	delayed_start(t_philo *p); 
-void					*solo_dolo(t_etiquette *e, t_philo *p);
+void					solo_dolo(t_etiquette *e, t_philo *p);
 /*-----------------UTILS--------------------*/
 /*@brief Converts the string received 
  * if numeric to to numeric format type*/
