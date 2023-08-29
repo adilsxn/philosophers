@@ -11,14 +11,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "../inc/philo_bonus.h"
 
 static int	init_etiq(t_etiquette *e, char **av, int ac)
 {
 	e->nb_philo = ft_atoi(av[1]);
-	e->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * e->nb_philo);
 	e->philos = (t_philo *)malloc(sizeof(t_philo) * e->nb_philo);
-	if (!e->forks || !e->philos)
+	if (!e->philos)
 		return (1);
 	e->time_to_die = ft_atoi(av[2]);
 	e->time_to_eat = ft_atoi(av[3]);
@@ -26,27 +25,20 @@ static int	init_etiq(t_etiquette *e, char **av, int ac)
 	e->must_eat = -1;
 	e->all_fed = 0;
 	e->all_alive = 1;
-	e->total_meals = 0;
 	e->start_time = get_timestamp();
 	if (ac == 6)
 		e->must_eat = ft_atoi(av[5]);
 	return (0);
 }
 
-static int	init_mtx(t_etiquette *e)
+static int	init_sem(t_etiquette *e)
 {
-	int	i;
-
 	if (!e)
 		return (1);
-	i = e->nb_philo;
-	while (--i >= 0)
-	{
-		if (pthread_mutex_init(&e->forks[i], NULL))
-			return (2);
-	}
-	if (pthread_mutex_init(&e->check, NULL))
-		return (2);
+	sem_unlink("/forks");
+	e->forks = sem_open("/forks", O_CREAT, S_IRWXU, e->nb_philo);
+	if (e->forks == SEM_FAILED)
+		return (1);
 	return (0);
 }
 
@@ -62,9 +54,6 @@ static int	init_phil(t_etiquette *e)
 		e->philos[i].id = i;
 		e->philos[i].full = 0;
 		e->philos[i].nb_meals = 0;
-		e->philos[i].thread = 0;
-		e->philos[i].left_fork = e->forks + i;
-		e->philos[i].right_fork = e->forks + ((i + 1) % e->nb_philo);
 		e->philos[i].meal_time = e->start_time;
 		e->philos[i].rules = e;
 	}
@@ -77,7 +66,7 @@ int	set_table(t_etiquette *e, char **av, int ac)
 		return (1);
 	if (init_phil(e))
 		return (printf("Error: initiating philosophers"), 3);
-	if (init_mtx(e))
+	if (init_sem(e))
 		return (printf("Error: initiating the mutexes"), 4);
 	return (0);
 }

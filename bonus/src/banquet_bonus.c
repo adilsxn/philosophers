@@ -10,63 +10,54 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
-#include <pthread.h>
+#include "../inc/philo_bonus.h"
 
-static int	create_threads(t_etiquette *e)
+
+
+static int	create_proc(t_etiquette *e)
 {
 	int	i;
+	t_philo *p;
 
 	i = -1;
+	p = e->philos;
 	e->start_time = get_timestamp();
 	while (++i < e->nb_philo)
 	{
-		if (pthread_create(&e->philos[i].thread, NULL, strt_rtn, &e->philos[i]))
-			return (1);
+		p[i].pid = fork();
+		if (p[i].pid < 0)
+			exit(1);
+		if (p[i].pid == 0)
+			strt_rtn((void *)&(p[i]));
 	}
-	if (pthread_create(&e->checker, NULL, checker, e))
-		return (1);
-	return (0);
+	exit (0);
 }
-
-static int	join_threads(t_etiquette *e)
+ 
+int	laundry_proc(t_etiquette *e)
 {
 	int	i;
-	int	sts;
-
-	i = -1;
-	while (++i < e->nb_philo)
-	{
-		sts = pthread_join(e->philos[i].thread, NULL);
-		if (sts)
-			return (sts);
-	}
-	sts = pthread_join(e->checker, NULL);
-	return (sts);
-}
-
-int	laundry(t_etiquette *e)
-{
-	int	i;
+	int sts;
 
 	i = -1;
 	if (!e)
 		return (1);
-	while (++i < e->nb_philo)
+	waitpid(-1, &sts, 0);
+	if (WIFEXITED(sts))
 	{
-		pthread_mutex_destroy(&e->forks[i]);
+		while (++i < e->nb_philo)
+			kill(e->philos[i].pid, 15);
 	}
-	pthread_mutex_destroy(&e->check);
+	sem_close(e->forks);
+	sem_unlink("/forks");
 	free(e->philos);
-	free(e->forks);
 	return (0);
 }
 
 int	banquet(t_etiquette *e)
 {
-	if (create_threads(e))
-		return (printf("Error while creating threads"), 1);
-	if (join_threads(e))
-		return (printf("Error while joining threads"), 2);
+	if (create_proc(e))
+		return (printf("Error while creating processes\n"), 1);
+	if (laundry_proc(e))
+		return (printf("Error while cleaning processes\n"), 2);
 	return (0);
 }

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "../inc/philo_bonus.h"
 
 void	*strt_rtn(void *arg)
 {
@@ -20,61 +20,35 @@ void	*strt_rtn(void *arg)
 	p = (t_philo *)arg;
 	e = p->rules;
 	delayed_start(p);
-	while (e->all_alive && !e->all_fed)
-		life(p, e);
-	return (NULL); 
-}
-
-int	dth_chck(t_etiquette *e)
-{
-	int	i;
-	t_philo *p;
-
-	p = e->philos;
-	while(!e->all_fed)
+	pthread_create(&(p->checker), NULL, checker, arg);
+	pthread_detach(p->checker);
+	while (e->all_alive)
 	{
-		i = -1;
-		while (++i < e->nb_philo && e->all_alive)
-		{
-			if (death(&p[i], e))
-			usleep(100);
-		}
-		if (!e->all_alive)
+		life(p, e);
+		if (e->must_eat != -1 && p->nb_meals >= e->must_eat)
 			break ;
-		i = 0;
-		while (e->must_eat != -1 && i < e->nb_philo &&
-			p[i].nb_meals >= e->must_eat)
-			i++;
-		if (i == e->must_eat)
-		    e->all_fed = 1;
+		log_status(p, e, SLEEP);
+		usleep(e->time_to_sleep * 1000);
+		log_status(p, e, THINK);
 	}
-	return (0);
+	return (NULL); 
 }
 
 void	*checker(void *arg)
 {
-	int i;
 	t_philo *p;
 	t_etiquette	*e;
 
-	e = (t_etiquette *)arg;
-	p = e->philos;
-	while(!e->all_fed)
+	p = (t_philo *)arg;
+	e = p->rules;
+	while(1)
 	{
-		i = -1;
-		while (++i < e->nb_philo && e->all_alive)
-		{
-			death(&p[i], e);
-			usleep(100);
-		}
+		death(p, e);
 		if (!e->all_alive)
 			break ;
-		i = 0;
-		while (e->must_eat != -1 && i < e->nb_philo &&
-			p[i].nb_meals >= e->must_eat)
-			i++;
-		if (i == e->nb_philo)
-		    e->all_fed = 1;
+		usleep(1000);
+		while (e->must_eat != -1 && p->nb_meals >= e->must_eat)
+			break ;
 	}
 	return (NULL);
 }

@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <pthread.h>
 # include <stdbool.h>
@@ -19,17 +19,20 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <semaphore.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
 /**/
 
 typedef struct s_philo
 {
 	int					id;
+	pid_t                pid;
 	bool				full;
-	pthread_mutex_t		*right_fork;
-	pthread_mutex_t		*left_fork;
 	int					nb_meals;
 	long long			meal_time;
-	pthread_t			thread;
+	pthread_t			checker;
 	struct s_etiquette	*rules;
 }						t_philo;
 
@@ -42,11 +45,8 @@ typedef struct s_etiquette
 	int					must_eat;
 	bool				all_alive;
 	bool				all_fed;
-	int					total_meals;
-	pthread_t			checker;
 	long long			start_time;
-	pthread_mutex_t		*forks;
-	pthread_mutex_t     check;
+	sem_t		        *forks;
 	t_philo				*philos;
 }						t_etiquette;
 /**/
@@ -69,7 +69,7 @@ int						set_table(t_etiquette *e, char *argv[], int argc);
 int						banquet(t_etiquette *e);
 /*@brif Destroy the mutexes and free any 
  * allocated structures or arrays*/
-int						laundry(t_etiquette *e);
+int						laundry_proc(t_etiquette *e);
 /*@brief Routine for the dead of full
  checker responsible fot checking if the philosophers
  are dead or full*/
