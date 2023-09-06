@@ -73,9 +73,9 @@ int						laundry_proc(t_etiquette *e);
 /*@brief Routine for the dead of full
  checker responsible fot checking if the philosophers
  are dead or full*/
-int						dth_chck(t_etiquette *e);
+//int						dth_chck(t_etiquette *e);
 void					*checker(void *arg);
-void					*strt_rtn(void *arg);
+void					strt_rtn(void *arg);
 
 /*-----------ACTIONS-----------------------*/
 /* @brief entire lifetime of philosophers

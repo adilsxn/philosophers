@@ -12,7 +12,7 @@
 
 #include "../inc/philo_bonus.h"
 
-void	*strt_rtn(void *arg)
+void	strt_rtn(void *arg)
 {
 	t_philo		*p;
 	t_etiquette	*e;
@@ -31,7 +31,7 @@ void	*strt_rtn(void *arg)
 		usleep(e->time_to_sleep * 1000);
 		log_status(p, e, THINK);
 	}
-	return (NULL); 
+	exit(0); 
 }
 
 void	*checker(void *arg)

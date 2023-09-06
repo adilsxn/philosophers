@@ -12,8 +12,6 @@
 
 #include "../inc/philo_bonus.h"
 
-
-
 static int	create_proc(t_etiquette *e)
 {
 	int	i;
@@ -30,7 +28,7 @@ static int	create_proc(t_etiquette *e)
 		if (p[i].pid == 0)
 			strt_rtn((void *)&(p[i]));
 	}
-	exit (0);
+	return (0);
 }
  
 int	laundry_proc(t_etiquette *e)
@@ -50,7 +48,7 @@ int	laundry_proc(t_etiquette *e)
 	sem_close(e->forks);
 	sem_unlink("/forks");
 	free(e->philos);
-	return (0);
+	exit (0);
 }
 
 int	banquet(t_etiquette *e)
