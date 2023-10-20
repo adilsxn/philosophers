@@ -35,7 +35,7 @@ int	argparser(int argc, char *av[])
 	while (--argc > 0)
 		if (arenum(av[argc]))
 			return (printf("Error: Non numeric argument\n"), 2);
-	if (ft_atoi(av[1]) < 1 || ft_atoi(av[1]) > 100 || ft_atoi(av[2]) < 0
+	if (ft_atoi(av[1]) < 1 || ft_atoi(av[1]) > 200 || ft_atoi(av[2]) < 0
 		|| ft_atoi(av[3]) < 0 || ft_atoi(av[4]) < 0)
 		return (printf("Invalid parameters!\n"), 3);
 	if (av[5] && ft_atoi(av[5]) < 1)

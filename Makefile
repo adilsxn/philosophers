@@ -21,13 +21,13 @@ B_SRC       = bonus/src/banquet_bonus.c bonus/src/utils_bonus.c  bonus/src/set_t
 
 OBJS       = ${SRCS:mandatory/src/%.c=$(OBJ_DIR)/%.o}
 B_OBJS     = ${B_SRC:bonus/src/%.c=$(B_OBJ_DIR)/%.o}
-BUILD_DIR  = ./build
+BUILD_DIR  = build
 OBJ_DIR    = ${BUILD_DIR}/obj
 B_OBJ_DIR  = ${BUILD_DIR}/b_obj
 INCS 			 = ./mandatory/inc/
 B_INCS     = ./bonus/inc/
-NAME       = philo
-B_NAME     = philo_bonus
+NAME       = ${BUILD_DIR}/philo
+B_NAME     = ${BUILD_DIR}/philo_bonus
 CC         = cc
 CFLAGS     = -g -Wall -Wextra -Werror
 LDFLAGS 	 = -lpthread
@@ -35,25 +35,25 @@ RM         = rm -rf
 
 all: ${NAME}
 
-$(OBJ_DIR)/%.o: mandatory/src/%.c | DIRECTORIES
-	@$(CC) $(CFLAGS) -c $< -o $@ -I $(INCS) ${LDFLAGS}
+$(OBJ_DIR)/%.o: mandatory/src/%.c | $(BUILD_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@ -I $(INCS)
 
-${NAME}: ${OBJS}
+${NAME}: ${OBJS} | $(BUILD_DIR)
 	@echo "Compiling philo"
 	@${CC} ${CFLAGS}  $^ -o $@  -I ${INCS} ${LDFLAGS}
-	@mv ${NAME} ${BUILD_DIR}/
 	@echo "philo created"
 
-$(B_OBJ_DIR)/%.o: bonus/src/%.c | DIRECTORIES
-	@$(CC) $(CFLAGS) -I $(INCS) -c $< -o $@ -I $(INCS) ${LDFLAGS}
+$(B_OBJ_DIR)/%.o: bonus/src/%.c | $(BUILD_DIR)
+	@$(CC) $(CFLAGS) -I $(INCS) -c $< -o $@ -I $(INCS)
 
-bonus: ${B_OBJS}
+bonus: ${B_NAME}
+
+${B_NAME}: ${B_OBJS} | $(BUILD_DIR)
 	@echo "Compiling philo_bonus"
 	@${CC} ${CFLAGS}  $^ -o ${B_NAME} -I ${INCS} ${LDFLAGS}
-	@mv ${B_NAME} ${BUILD_DIR}/
 	@echo "philo_bonus created"
 
-DIRECTORIES:
+$(BUILD_DIR):
 	@mkdir -p ${BUILD_DIR}
 	@mkdir -p ${OBJ_DIR} ${B_OBJ_DIR}
 
