@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/philo_bonus.h"
+#include <semaphore.h>
 
 static int	create_proc(t_etiquette *e)
 {
@@ -46,7 +47,11 @@ int	laundry_proc(t_etiquette *e)
 			kill(e->philos[i].pid, 15);
 	}
 	sem_close(e->forks);
+    sem_close(e->superv);
+    sem_close(e->print);
 	sem_unlink("/forks");
+    sem_unlink("/superv");
+    sem_unlink("/print");
 	free(e->philos);
 	exit(0);
 }

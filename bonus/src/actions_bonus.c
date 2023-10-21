@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/philo_bonus.h"
+#include <semaphore.h>
 
 void	life(t_philo *p, t_etiquette *e)
 {
@@ -20,9 +21,11 @@ void	life(t_philo *p, t_etiquette *e)
 		solo_dolo(e, p);
 	sem_wait(e->forks);
 	log_status(p, e, FORK);
+    sem_wait(e->superv);
 	p->meal_time = get_timestamp();
 	log_status(p, e, EAT);
 	p->nb_meals++;
+    sem_post(e->superv);
 	usleep(e->time_to_eat * 1000);
 	sem_post(e->forks);
 	sem_post(e->forks);
@@ -42,5 +45,5 @@ int	death(t_philo *p, t_etiquette *e)
 void	delayed_start(t_philo *p)
 {
 	if (p->id % 2)
-		usleep(1500);
+		usleep(1000);
 }

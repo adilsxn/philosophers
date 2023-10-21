@@ -47,6 +47,8 @@ typedef struct s_etiquette
 	bool				all_fed;
 	long long			start_time;
 	sem_t		        *forks;
+    sem_t               *superv;
+    sem_t               *print;
 	t_philo				*philos;
 }						t_etiquette;
 /**/

@@ -12,6 +12,8 @@
 /* ************************************************************************** */
 
 #include "../inc/philo_bonus.h"
+#include <semaphore.h>
+#include <sys/stat.h>
 
 static int	init_etiq(t_etiquette *e, char **av, int ac)
 {
@@ -36,8 +38,13 @@ static int	init_sem(t_etiquette *e)
 	if (!e)
 		return (1);
 	sem_unlink("/forks");
+    sem_unlink("/superv");
+    sem_unlink("/print");
 	e->forks = sem_open("/forks", O_CREAT, S_IRWXU, e->nb_philo);
-	if (e->forks == SEM_FAILED)
+    e->superv = sem_open("/superv", O_CREAT, S_IRWXU, 1);
+    e->print = sem_open("/print", O_CREAT, S_IRWXU, 1);
+	if (e->forks == SEM_FAILED || e->superv == SEM_FAILED 
+        || e->print == SEM_FAILED)
 		return (1);
 	return (0);
 }

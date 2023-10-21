@@ -12,6 +12,7 @@
 /* ************************************************************************** */
 
 #include "../inc/philo_bonus.h"
+#include <semaphore.h>
 
 int	ft_atoi(const char *str)
 {
@@ -64,11 +65,13 @@ static char	*get_status(t_ph_status status)
 
 void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
 {
+    sem_wait(e->print);
 	if (e->all_alive)
 	{
 		printf("[%4lld]ms %i %s\n", (get_timestamp() - 
             e->start_time), (p->id + 1), get_status(status));
 	}
+    sem_post(e->print);
 }
 
 void	solo_dolo(t_etiquette *e, t_philo *p)
