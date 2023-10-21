@@ -22,44 +22,44 @@ void	*strt_rtn(void *arg)
 	delayed_start(p);
 	while (e->all_alive && !e->all_fed)
 		life(p, e);
-	return (NULL); 
+	return (NULL);
 }
 
 int	dth_chck(t_etiquette *e)
 {
-	int	i;
-	t_philo *p;
+	int		i;
+	t_philo	*p;
 
 	p = e->philos;
-	while(!e->all_fed)
+	while (!e->all_fed)
 	{
 		i = -1;
 		while (++i < e->nb_philo && e->all_alive)
 		{
 			if (death(&p[i], e))
-			usleep(100);
+				usleep(100);
 		}
 		if (!e->all_alive)
 			break ;
 		i = 0;
 		while (e->must_eat != -1 && i < e->nb_philo &&
-			p[i].nb_meals >= e->must_eat)
+				p[i].nb_meals >= e->must_eat)
 			i++;
 		if (i == e->must_eat)
-		    e->all_fed = 1;
+			e->all_fed = 1;
 	}
 	return (0);
 }
 
 void	*checker(void *arg)
 {
-	int i;
-	t_philo *p;
+	int			i;
+	t_philo		*p;
 	t_etiquette	*e;
 
 	e = (t_etiquette *)arg;
 	p = e->philos;
-	while(!e->all_fed)
+	while (!e->all_fed)
 	{
 		i = -1;
 		while (++i < e->nb_philo && e->all_alive)
@@ -71,10 +71,10 @@ void	*checker(void *arg)
 			break ;
 		i = 0;
 		while (e->must_eat != -1 && i < e->nb_philo &&
-			p[i].nb_meals >= e->must_eat)
+				p[i].nb_meals >= e->must_eat)
 			i++;
 		if (i == e->nb_philo)
-		    e->all_fed = 1;
+			e->all_fed = 1;
 	}
 	return (NULL);
 }

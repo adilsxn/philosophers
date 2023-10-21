@@ -66,8 +66,8 @@ void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
 {
 	if (e->all_alive)
 	{
-		printf("[%4lld]ms %i %s\n", (get_timestamp() - e->start_time), (p->id
-				+ 1), get_status(status));
+		printf("[%4lld]ms %i %s\n", (get_timestamp() - 
+            e->start_time), (p->id + 1), get_status(status));
 	}
 }
 

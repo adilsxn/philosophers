@@ -44,7 +44,7 @@ static int	init_sem(t_etiquette *e)
 
 static int	init_phil(t_etiquette *e)
 {
-	int		i;
+	int	i;
 
 	if (!e)
 		return (1);

@@ -14,8 +14,8 @@
 
 static int	create_proc(t_etiquette *e)
 {
-	int	i;
-	t_philo *p;
+	int		i;
+	t_philo	*p;
 
 	i = -1;
 	p = e->philos;
@@ -30,11 +30,11 @@ static int	create_proc(t_etiquette *e)
 	}
 	return (0);
 }
- 
+
 int	laundry_proc(t_etiquette *e)
 {
 	int	i;
-	int sts;
+	int	sts;
 
 	i = -1;
 	if (!e)
@@ -48,7 +48,7 @@ int	laundry_proc(t_etiquette *e)
 	sem_close(e->forks);
 	sem_unlink("/forks");
 	free(e->philos);
-	exit (0);
+	exit(0);
 }
 
 int	banquet(t_etiquette *e)

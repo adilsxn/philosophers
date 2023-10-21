@@ -25,7 +25,7 @@ void	life(t_philo *p, t_etiquette *e)
 	p->nb_meals++;
 	usleep(e->time_to_eat * 1000);
 	sem_post(e->forks);
-    sem_post(e->forks);
+	sem_post(e->forks);
 }
 
 int	death(t_philo *p, t_etiquette *e)
@@ -34,7 +34,7 @@ int	death(t_philo *p, t_etiquette *e)
 	{
 		log_status(p, e, DEAD);
 		e->all_alive = 0;
-		exit (1);
+		exit(1);
 	}
 	return (0);
 }

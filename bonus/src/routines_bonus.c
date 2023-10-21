@@ -31,17 +31,17 @@ void	strt_rtn(void *arg)
 		usleep(e->time_to_sleep * 1000);
 		log_status(p, e, THINK);
 	}
-	exit(0); 
+	exit(0);
 }
 
 void	*checker(void *arg)
 {
-	t_philo *p;
+	t_philo		*p;
 	t_etiquette	*e;
 
 	p = (t_philo *)arg;
 	e = p->rules;
-	while(1)
+	while (1)
 	{
 		death(p, e);
 		if (!e->all_alive)
