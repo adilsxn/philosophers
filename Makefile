@@ -67,7 +67,7 @@ fclean: clean
 re: fclean all
 
 norm:
-	norminette -R CheckForbiddenSourceHeader ${SRCS}
-	norminette -R CheckDefine ${INCS}
+	norminette -R CheckForbiddenSourceHeader ${SRCS} ${B_SRC}
+	norminette -R CheckDefine ${INCS} ${B_INCS}
 
 .PHONY: all re clean fclean bonus
