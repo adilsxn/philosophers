@@ -46,7 +46,7 @@ void	*checker(void *arg)
 		death(p, e);
 		if (!e->all_alive)
 			break ;
-		usleep(1000);
+//		usleep(1000);
 		while (e->must_eat != -1 && p->nb_meals >= e->must_eat)
 			break ;
 	}
