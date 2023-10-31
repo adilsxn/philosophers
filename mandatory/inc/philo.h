@@ -14,17 +14,16 @@
 # define PHILO_H
 
 # include <pthread.h>
-# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <time.h>
 # include <unistd.h>
-/**/
 
 typedef struct s_philo
 {
 	int					id;
-	bool				full;
+	int					full;
 	pthread_mutex_t		*right_fork;
 	pthread_mutex_t		*left_fork;
 	int					nb_meals;
@@ -40,19 +39,20 @@ typedef struct s_etiquette
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat;
-	bool				all_alive;
-	bool				all_fed;
+	int					all_alive;
+	int					all_fed;
 	int					total_meals;
 	pthread_t			checker;
 	long long			start_time;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t     check;
+	pthread_mutex_t		g_lock;
 	t_philo				*philos;
 }						t_etiquette;
 /**/
 typedef enum e_ph_status
 {
-	FORK,
+	FORK1,
+	FORK2,
 	DEAD,
 	THINK,
 	EAT,
@@ -78,19 +78,28 @@ void					*checker(void *arg);
 void					*strt_rtn(void *arg);
 
 /*-----------ACTIONS-----------------------*/
+
+/*@brief sleeps periodically and checks 
+ * the all_alive flag for the banquet's end*/
+void					_sleep(t_etiquette *e, time_t time_to_spend);
+
 /* @brief entire lifetime of philosophers
  * eats, sleeps and thinks*/
 void					life(t_philo *p, t_etiquette *e);
 int						death(t_philo *p, t_etiquette *e);
+
 /*@brief Routine to delay the of threads with even id's */
-void	delayed_start(t_philo *p); 
+void					delayed_start(t_philo *p);
 void					solo_dolo(t_etiquette *e, t_philo *p);
 /*-----------------UTILS--------------------*/
+
 /*@brief Converts the string received 
  * if numeric to to numeric format type*/
 int						ft_atoi(const char *str);
+
 /*@brief returns the time in milliseconds*/
 long long				get_timestamp(void);
+
 /*Return logs the status for 
  * what the philosopher is 
  * currently doing*/
