@@ -25,6 +25,32 @@ void	*strt_rtn(void *arg)
 	return (NULL);
 }
 
+int	dth_chck(t_etiquette *e)
+{
+	int		i;
+	t_philo	*p;
+
+	p = e->philos;
+	while (!e->all_fed)
+	{
+		i = -1;
+		while (++i < e->nb_philo && e->all_alive)
+		{
+			if (death(&p[i], e))
+				usleep(100);
+		}
+		if (!e->all_alive)
+			break ;
+		i = 0;
+		while (e->must_eat != -1 && i < e->nb_philo &&
+				p[i].nb_meals >= e->must_eat)
+			i++;
+		if (i == e->must_eat)
+			e->all_fed = 1;
+	}
+	return (0);
+}
+
 void	*checker(void *arg)
 {
 	int			i;
