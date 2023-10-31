@@ -45,7 +45,7 @@ static int	init_mtx(t_etiquette *e)
 		if (pthread_mutex_init(&e->forks[i], NULL))
 			return (2);
 	}
-	if (pthread_mutex_init(&e->check, NULL))
+	if (pthread_mutex_init(&e->g_lock, NULL))
 		return (2);
 	return (0);
 }

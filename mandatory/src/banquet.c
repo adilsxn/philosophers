@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
-#include <pthread.h>
 
 static int	create_threads(t_etiquette *e)
 {
@@ -56,7 +55,7 @@ int	laundry(t_etiquette *e)
 	{
 		pthread_mutex_destroy(&e->forks[i]);
 	}
-	pthread_mutex_destroy(&e->check);
+	pthread_mutex_destroy(&e->g_lock);
 	free(e->philos);
 	free(e->forks);
 	return (0);
