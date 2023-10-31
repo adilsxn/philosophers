@@ -11,40 +11,33 @@
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
-#include <pthread.h>
-
-// void think(t_philo *p, t_etiquette *e)
-// {
-//
-// }
 
 void	life(t_philo *p, t_etiquette *e)
 {
 	pthread_mutex_lock(p->left_fork);
 	log_status(p, e, FORK1);
+	if (e->nb_philo == 1)
+		solo_dolo(e, p);
 	pthread_mutex_lock(p->right_fork);
 	log_status(p, e, FORK2);
-	log_status(p, e, EAT);
-	_sleep(e, e->time_to_eat);
-	pthread_mutex_lock(&e->g_lock);
 	p->meal_time = get_timestamp();
-	pthread_mutex_unlock(&e->g_lock);
-	if (!e->all_fed && e->all_fed)
-	{
-		pthread_mutex_lock(&e->g_lock);
-		p->nb_meals++;
-		pthread_mutex_unlock(&e->g_lock);
-	}
-	log_status(p, e, SLEEP);
+	log_status(p, e, EAT);
+	p->nb_meals++;
+	_sleep(e, e->time_to_eat);
 	pthread_mutex_unlock(p->left_fork);
 	pthread_mutex_unlock(p->right_fork);
+	log_status(p, e, SLEEP);
 	_sleep(e, e->time_to_sleep);
 	log_status(p, e, THINK);
 }
 
 void	_sleep(t_etiquette *e, time_t time_to_spend)
 {
-	while (get_timestamp() < (get_timestamp() + time_to_spend))
+	long long tmp;
+
+	tmp = get_timestamp() + time_to_spend;
+
+	while (get_timestamp() < tmp)
 	{
 		if (!e->all_alive)
 			break ;
@@ -66,5 +59,5 @@ int	death(t_philo *p, t_etiquette *e)
 void	delayed_start(t_philo *p)
 {
 	if (p->id % 2)
-		log_status(p, p->rules, THINK);
+		usleep(1500);
 }

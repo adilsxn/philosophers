@@ -12,6 +12,7 @@
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <unistd.h>
 
 int	ft_atoi(const char *str)
 {
@@ -38,7 +39,7 @@ int	ft_atoi(const char *str)
 	return ((int)(res * sinal));
 }
 
-long long	get_time(void)
+long long	get_timestamp(void)
 {
 	struct timeval	tv;
 
@@ -57,16 +58,16 @@ static char	*get_status(t_ph_status status)
 	if (status == SLEEP)
 		return ("is sleeping");
 	if (status == FORK1)
-		return ("has taken fork 1");
+		return ("has taken a fork");
 	if (status == FORK2)
-		return ("has taken fork 2");
+		return ("has taken a fork");
 	else
 		return ("ERROR");
 }
 
 void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
 {
-	long long	tmp;
+	long long tmp;
 
 	tmp = get_timestamp() - e->start_time;
 	if (e->all_alive)
@@ -77,9 +78,9 @@ void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
 
 void	solo_dolo(t_etiquette *e, t_philo *p)
 {
-	pthread_mutex_lock(p->left_fork);
-	log_status(p, e, FORK1);
-	_sleep(e, e->time_to_die);
+	usleep(e->time_to_die * 1000);
 	log_status(p, e, DEAD);
 	pthread_mutex_unlock(p->left_fork);
+	e->all_alive = 0;
+	return ;
 }
