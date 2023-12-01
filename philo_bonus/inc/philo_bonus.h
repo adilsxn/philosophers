@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acuva-nu <acuva-nu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:37:25 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/01 15:37:04 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:42:03 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,38 @@ typedef enum e_status
 	SLEEP,
 	FULL,
 }					t_status;
+
+
+/**
+ * Sets the first 'n' bytes of the memory pointed to by 's' to the 
+ * specified value 'c'.
+ *
+ * @param s     Pointer to the memory to be filled.
+ * @param c     Value to be set.
+ * @param n     Number of bytes to be set.
+ * @return      Pointer to the memory area 's'.
+ */
+
+void	*fmemset(void *s, int c, size_t n);
+
+/**
+ * Allocates memory for an array of elements and initializes 
+ * them to zero.
+ *
+ * @param ptr    Pointer to the memory block to be allocated.
+ * @param count  Number of elements to allocate.
+ * @param size   Size of each element in bytes.
+ * @return       0 on success and 1 on failure.
+ */
+int fcalloc(void **ptr, size_t count, size_t size);
+
+/**
+ * Frees the memory pointed to by the given pointer.
+ *
+ * @param ptr A double pointer to the memory to be freed.
+ */
+
+void   ffree(void **ptr);
 
 /**
  * @brief Converts a string to an integer value.

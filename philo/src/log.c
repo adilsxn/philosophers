@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   log.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acuva-nu <acuva-nu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:52:31 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/01 17:23:05 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/01 20:57:12 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int log_status(t_ph *philo, t_status status)
 {
 	time_t	tmp;
 
-	if (pthread_mutex_lock(&philo->e->mu_p) == -1 || !timer(&tmp))
+	if (pthread_mutex_lock(&philo->e->mu_p) || timer(&tmp))
 		return (1);
 	printf("\033[30;47;20m");
 	printf("[%ld]", tmp - philo->e->start);
@@ -44,7 +44,7 @@ int log_status(t_ph *philo, t_status status)
 	}
 	if (status == DEAD || status == FULL)
 		return (1);
-	if (pthread_mutex_unlock(&philo->e->mu_p) == -1)
+	if (pthread_mutex_unlock(&philo->e->mu_p))
 		return (1);
 	return (0);
 }

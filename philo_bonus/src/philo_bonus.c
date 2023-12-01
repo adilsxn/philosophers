@@ -36,8 +36,7 @@ int	argparser(int argc, char *av[], t_etq *e)
 		return (printf("Invalid parameters!\n"), 3);
 	if ((av[5] && fatoi(av[5], &e->must_eat)) || e->must_eat < 1)
 		return (printf("Nbr times they must eat needs to be > 0!\n"), 4);
-	e->philos = (t_ph *)malloc(sizeof(t_ph) * e->nb_philo);
-	if (!e->philos)
+	if (fcalloc((void **)&e->philos, e->nb_philo, sizeof(t_ph)))
 		return (printf("Malloc error!\n"), 2);
 	if (init_sem(&e->sem_p, e->p_name, 1) || init_sem(&e->sem_e, e->e_name, 1)
 		|| init_sem(&e->sem_c, e->c_name, 1) || init_sem(&e->sem_f, e->f_name,
@@ -75,7 +74,7 @@ int	main(int argc, char *argv[])
 {
 	t_etq	e;
 
-	memset(&e, 0, sizeof(t_etq));
+	fmemset(&e, 0, sizeof(t_etq));
 	if (argparser(argc, argv, &e))
 		return (bad_exit(&e));
 	if (ready_eat(&e))

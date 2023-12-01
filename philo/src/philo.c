@@ -21,7 +21,7 @@
  * @param e A pointer to the t_etq structure to be initialized.
  * @return Returns 0 if successful, otherwise returns an error code.
  */
-int	argparser(int argc, char *av[], t_ph *philos, t_etq *e)
+int	argparser(int argc, char *av[], t_ph *philo, t_etq *e)
 {
 	int i;
 
@@ -35,14 +35,11 @@ int	argparser(int argc, char *av[], t_ph *philos, t_etq *e)
 		return (printf("Invalid parameters!\n"), 3);
 	if ((av[5] && fatoi(av[5], &e->must_eat)) || e->must_eat < 1)
 		return (printf("Nbr times they must eat needs to be > 0!\n"), 4);
-	philos = malloc(sizeof(t_ph) * e->nb_philo);
-	e->mu_f = malloc(sizeof(t_mu) * e->nb_philo);
-	if (!philos || !e->mu_f)
+	if (fcalloc((void **)&philo, e->nb_philo, sizeof(t_ph))
+		|| fcalloc((void **)&e->mu_f, e->nb_philo, sizeof(t_mu)))
 		return (printf("Malloc error!\n"), 2);
-	if ()
 	while(++i < e->nb_philo)
 	{
-
 		if (pthread_mutex_init(&e->mu_f[i], NULL)
 		|| pthread_mutex_init(&e->mu_p, NULL)
 		|| pthread_mutex_init(&e->mu_e, NULL))
@@ -51,27 +48,27 @@ int	argparser(int argc, char *av[], t_ph *philos, t_etq *e)
 	return (0);
 }
 
-static int	ready_eat(t_etq *e)
+static int	ready_eat(t_etq *e, t_ph *philo)
 {
 	int	i;
 
 	i = -1;
-	if (pthread_create(&e->th, NULL, gluttony, (void *)e)
-		|| pthread_detach(e->th) || timer(&(e->start)))
+	if (pthread_mutex_lock(&e->mu_e) || timer(&e->start))
 		return (1);
 	while (++i < e->nb_philo)
 	{
-		e->id = i;
-		e->philos[i].pid = fork();
-		if (e->philos[i].pid == -1)
+		philo[i].id = i;
+		philo[i].e = e;
+		philo[i].right = (i + 1) % e->nb_philo;
+		philo[i].left = i;
+		if (pthread_create(&philo[i].th, NULL, routine, (void *)(&philo[i]))
+		|| pthread_detach(philo[i].th))
 			return (1);
-		else if (e->philos[i].pid == 0)
-		{
-			routine(e);
-			exit(VALID);
-		}
+		if (pthread_create(&philo[i].th, NULL, famine, (void *)(&philo[i]))
+		|| pthread_detach(philo[i].th))
+			return (1);
 	}
-	if (pthread_mutex_lock(e->mu_e) == -1)
+	if (pthread_mutex_lock(&e->mu_e))
 		return (1);
 	return (0);
 }
@@ -79,11 +76,13 @@ static int	ready_eat(t_etq *e)
 int	main(int argc, char *argv[])
 {
 	t_etq	e;
+	t_ph	*philo;
 
-	memset(&e, 0, sizeof(t_etq));
-	if (argparser(argc, argv, &e))
-		return (bad_exit(&e));
-	if (ready_eat(&e))
-		return (bad_exit(&e));
-	return (good_exit(&e));
+	fmemset(&e, 0, sizeof(t_etq));
+	philo = NULL;
+	if (argparser(argc, argv, philo, &e))
+		return (bad_exit(philo));
+	if (ready_eat(&e, philo))
+		return (bad_exit(philo));
+	return (good_exit(philo));
 }

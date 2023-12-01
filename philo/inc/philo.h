@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acuva-nu <acuva-nu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:37:25 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/01 17:30:12 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:34:22 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ typedef struct s_ph
 	int             left;
 	int             right;
 	int				meals;
+	int 		   enough;
 	time_t			time;
 	t_th            fa;
 	t_th			th;
-	t_ph           *e;
-	
+	t_etq          *e;
 }					t_ph;
 
 typedef enum e_exit
@@ -74,16 +74,10 @@ typedef enum e_status
 	FULL,
 }					t_status;
 
-/**
- * @brief Converts a string to an integer value.
- *
- * This function takes a string as input and converts it to an integer value.
- * The converted value is stored in the provided integer pointer.
- *
- * @param str The string to be converted.
- * @param val Pointer to store the converted integer value.
- * @return 0 on success, 1 on failure.
- */
+void   *fmemset(void *s, int c, size_t n);
+int 	fcalloc(void **ptr, size_t count, size_t size);
+void   ffree(void *ptr);
+
 int					fatoi(char *str, int *val);
 
 /**
@@ -143,20 +137,6 @@ int					timer(time_t *val);
  * @param limit The limit time.
  */
 void				lapse(t_ph *philo, time_t start, time_t limit);
-
-/**
- * @brief Function that controls if the  philosopher is going 
- * to engage in gluttony.
- *
- * This function is responsible for controling if a philosopher about to
- * engage in gluttony. It takes a void pointer as an argument, which can 
- * be used to pass any necessary data to the function.
- *
- * @param arg A void pointer that can be used to pass any necessary 
- * data to the function.
- * @return A void pointer representing the result of the function.
- */
-void				*gluttony(void *arg);
 
 /**
  * @brief Function that checks if the philosopher hasn't eaten.
@@ -230,7 +210,7 @@ void				ph_think(t_ph *philo);
  *
  * @param philo A pointer to a `t_ph` structure representing the philosopher.
  */
-void routine(t_ph *philo);
-void				routine(t_ph *philo);
+
+void				*routine(void *arg);
 
 #endif

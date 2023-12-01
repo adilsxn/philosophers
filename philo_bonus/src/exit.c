@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acuva-nu <acuva-nu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:03:52 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/01 15:31:48 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:38:22 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	laundry(t_etq *e)
 		kill(e->philos[i].pid, 15);
 		waitpid(e->philos[i].pid, NULL, WNOHANG);
 	}
-	free(e->philos);
+	ffree((void **)e->philos);
 	return (0);
 }
 

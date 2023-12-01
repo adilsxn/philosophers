@@ -3,52 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acuva-nu <acuva-nu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:03:52 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/01 16:43:52 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/01 20:45:44 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
+
 /**
- * @brief Performs the laundry operation.
- *
- * This function is responsible for performing the laundry operation
- * on the given t_etq structure.
- *
- * @param e The t_etq structure to perform the laundry operation on.
- * @return 0 on success.
+ * @brief Function to handle laundry for a philosopher.
+ * 
+ * This function is responsible for handling the laundry task for a philosopher.
+ * It takes a pointer to a `t_ph` structure as a parameter.
+ * 
+ * @param philo A pointer to a `t_ph` structure representing the philosopher.
  */
-static int	laundry(t_etq *e)
+static void laundry(t_ph *philo)
 {
 	int	i;
 
 	i = -1;
-	sem_unlink(e->c_name);
-	sem_unlink(e->e_name);
-	sem_unlink(e->p_name);
-	sem_unlink(e->f_name);
-	while (++i < e->nb_philo)
+	if ((philo->e->mu_f))
 	{
-		kill(e->philos[i].pid, 15);
-		waitpid(e->philos[i].pid, NULL, WNOHANG);
+		while (++i < philo->e->nb_philo)
+			pthread_mutex_destroy(&philo->e->mu_f[i]);
+		ffree(philo->e->mu_f);
+		ffree(philo);
 	}
-	free(e->philos);
-	return (0);
+	pthread_mutex_destroy(&philo->e->mu_e);
+	pthread_mutex_destroy(&philo->e->mu_p);
 }
 
-t_exit	bad_exit(t_etq *e)
+t_exit	bad_exit(t_ph *philo)
 {
-	laundry(e);
+	laundry(philo);
 	printf("Something went wrong\n");
 	printf(MSG);
 	return (INVALID);
 }
 
-t_exit	good_exit(t_etq *e)
+t_exit	good_exit(t_ph *philo)
 {
-	laundry(e);
+	laundry(philo);
 	return (VALID);
 }

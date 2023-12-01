@@ -10,9 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 OBJ_DIR    = ./obj
-SRCS       = src/fatoi.c src/sem.c  src/exit.c  src/log.c         \
-             src/timer.c  src/forks.c src/actions.c src/process.c \
-			 src/philo_bonus.c
+SRCS       = src/ffree.c src/fmemset.c src/fcalloc.c src/fatoi.c  \
+		     src/exit.c  src/log.c  src/timer.c src/forks.c       \
+			 src/actions.c src/threads.c  src/philo.c
 OBJS       = ${SRCS:src/%.c=$(OBJ_DIR)/%.o}
 INCS 	   = inc/
 NAME       = philo_bonus

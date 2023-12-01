@@ -13,15 +13,16 @@
 
 #include "../inc/philo.h"
 
-void	take_fork(t_etq *e)
+void	take_fork(t_ph *philo)
 {
-	if (pthread_mutex_lock(e->sem_f) == -1 || log_status(e, FORK)
-		|| pthread_mutex_lock(e->sem_f) == -1 || log_status(e, FORK))
-		pthread_mutex_unlock(e->mu_e);
+	if (pthread_mutex_lock(philo->e->mu_f) || log_status(philo, FORK)
+		|| pthread_mutex_lock(philo->e->mu_f) || log_status(philo, FORK))
+		pthread_mutex_unlock(&philo->e->mu_e);
 }
 
-void	put_fork(t_etq *e)
+void	put_fork(t_ph *philo)
 {
-	if (pthread_mutex_unlock(e->sem_f) == -1 || pthread_mutex_unlock(e->sem_f) == -1)
-		pthread_mutex_unlock(e->mu_e);
+	if (pthread_mutex_unlock(philo->e->mu_f)
+	|| pthread_mutex_unlock(philo->e->mu_f))
+		pthread_mutex_unlock(&philo->e->mu_e);
 }
