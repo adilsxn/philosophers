@@ -48,7 +48,7 @@ typedef struct s_etiquette
 	pthread_mutex_t		*forks;
 	pthread_mutex_t     check;
 	t_philo				*philos;
-}						t_etiquette;
+}						t_etq;
 /**/
 typedef enum e_ph_status
 {
@@ -65,31 +65,31 @@ typedef enum e_ph_status
 int						argparser(int argc, char *av[]);
 /*@brief initializes the main 
  * structures used by the program*/
-int						set_table(t_etiquette *e, char *argv[], int argc);
+int						set_table(t_etq *e, char *argv[], int argc);
 /*@brief Creates and joins the threads*/
-int						banquet(t_etiquette *e);
+int						banquet(t_etq *e);
 /*@brif Destroy the mutexes and free any 
  * allocated structures or arrays*/
-int						laundry(t_etiquette *e);
+int						laundry(t_etq *e);
 /*@brief Routine for the dead of full
  checker responsible fot checking if the philosophers
  are dead or full*/
-int						dth_chck(t_etiquette *e);
+int						dth_chck(t_etq *e);
 void					*checker(void *arg);
 void					*strt_rtn(void *arg);
 
 /*-----------ACTIONS-----------------------*/
 /*@brief sleeps periodically and checks 
  * the all_alive flag for the banquet's end*/
-void					_sleep(t_etiquette *e, time_t time_to_spend);
+void					_sleep(t_etq *e, time_t time_to_spend);
 
 /* @brief entire lifetime of philosophers
  * eats, sleeps and thinks*/
-void					life(t_philo *p, t_etiquette *e);
-int						death(t_philo *p, t_etiquette *e);
+void					life(t_philo *p, t_etq *e);
+int						death(t_philo *p, t_etq *e);
 /*@brief Routine to delay the of threads with even id's */
 void	delayed_start(t_philo *p); 
-void					solo_dolo(t_etiquette *e, t_philo *p);
+void					solo_dolo(t_etq *e, t_philo *p);
 /*-----------------UTILS--------------------*/
 /*@brief Converts the string received 
  * if numeric to to numeric format type*/
@@ -99,6 +99,6 @@ long long				get_timestamp(void);
 /*Return logs the status for 
  * what the philosopher is 
  * currently doing*/
-void					log_status(t_philo *p, t_etiquette *e,
+void					log_status(t_philo *p, t_etq *e,
 							t_ph_status status);
 #endif

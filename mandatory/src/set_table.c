@@ -13,7 +13,7 @@
 
 #include "../inc/philo.h"
 
-static int	init_etiq(t_etiquette *e, char **av, int ac)
+static int	init_etiq(t_etq *e, char **av, int ac)
 {
 	e->nb_philo = ft_atoi(av[1]);
 	e->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * e->nb_philo);
@@ -33,7 +33,7 @@ static int	init_etiq(t_etiquette *e, char **av, int ac)
 	return (0);
 }
 
-static int	init_mtx(t_etiquette *e)
+static int	init_mtx(t_etq *e)
 {
 	int	i;
 
@@ -50,7 +50,7 @@ static int	init_mtx(t_etiquette *e)
 	return (0);
 }
 
-static int	init_phil(t_etiquette *e)
+static int	init_phil(t_etq *e)
 {
 	int	i;
 
@@ -71,7 +71,7 @@ static int	init_phil(t_etiquette *e)
 	return (0);
 }
 
-int	set_table(t_etiquette *e, char **av, int ac)
+int	set_table(t_etq *e, char **av, int ac)
 {
 	if (init_etiq(e, av, ac))
 		return (1);

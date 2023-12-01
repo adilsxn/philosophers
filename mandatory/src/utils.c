@@ -65,7 +65,7 @@ static char	*get_status(t_ph_status status)
 		return ("ERROR");
 }
 
-void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
+void	log_status(t_philo *p, t_etq *e, t_ph_status status)
 {
 	long long tmp;
 
@@ -76,7 +76,7 @@ void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
 	}
 }
 
-void	solo_dolo(t_etiquette *e, t_philo *p)
+void	solo_dolo(t_etq *e, t_philo *p)
 {
 	usleep(e->time_to_die * 1000);
 	log_status(p, e, DEAD);

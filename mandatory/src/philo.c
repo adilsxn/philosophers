@@ -15,7 +15,7 @@
 
 int	main(int argc, char *argv[])
 {
-	t_etiquette	e;
+	t_etq	e;
 
 	if (argparser(argc, argv))
 		return (1);

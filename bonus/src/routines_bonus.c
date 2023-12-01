@@ -16,7 +16,7 @@
 void	strt_rtn(void *arg)
 {
 	t_philo		*p;
-	t_etiquette	*e;
+	t_etq	*e;
 
 	p = (t_philo *)arg;
 	e = p->rules;
@@ -38,7 +38,7 @@ void	strt_rtn(void *arg)
 void	*checker(void *arg)
 {
 	t_philo		*p;
-	t_etiquette	*e;
+	t_etq	*e;
 
 	p = (t_philo *)arg;
 	e = p->rules;

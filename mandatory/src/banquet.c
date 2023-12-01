@@ -13,7 +13,7 @@
 #include "../inc/philo.h"
 #include <pthread.h>
 
-static int	create_threads(t_etiquette *e)
+static int	create_threads(t_etq *e)
 {
 	int	i;
 
@@ -29,7 +29,7 @@ static int	create_threads(t_etiquette *e)
 	return (0);
 }
 
-static int	join_threads(t_etiquette *e)
+static int	join_threads(t_etq *e)
 {
 	int	i;
 	int	sts;
@@ -45,7 +45,7 @@ static int	join_threads(t_etiquette *e)
 	return (sts);
 }
 
-int	laundry(t_etiquette *e)
+int	laundry(t_etq *e)
 {
 	int	i;
 
@@ -62,7 +62,7 @@ int	laundry(t_etiquette *e)
 	return (0);
 }
 
-int	banquet(t_etiquette *e)
+int	banquet(t_etq *e)
 {
 	if (create_threads(e))
 		return (printf("Error while creating threads"), 1);

@@ -12,7 +12,6 @@
 /* ************************************************************************** */
 
 #include "../inc/philo_bonus.h"
-#include <semaphore.h>
 
 int	ft_atoi(const char *str)
 {
@@ -39,46 +38,12 @@ int	ft_atoi(const char *str)
 	return ((int)(res * sinal));
 }
 
-long long	get_timestamp(void)
-{
-	struct timeval	tv;
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000 + tv.tv_usec / 1000));
-}
-
-static char	*get_status(t_ph_status status)
-{
-	if (status == THINK)
-		return ("is thinking");
-	if (status == EAT)
-		return ("is eating");
-	if (status == DEAD)
-		return ("died");
-	if (status == SLEEP)
-		return ("is sleeping");
-	if (status == FORK)
-		return ("has taken a fork");
-	else
-		return ("ERROR");
-}
-
-void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
-{
-    sem_wait(e->print);
-	if (e->all_alive)
-	{
-		printf("[%4lld]ms %i %s\n", (get_timestamp() - 
-            e->start_time), (p->id + 1), get_status(status));
-	}
-    sem_post(e->print);
-}
-
-void	solo_dolo(t_etiquette *e, t_philo *p)
+void	solo_dolo(t_etq *e, t_philo *p)
 {
 	usleep(e->time_to_die * 1000);
 	log_status(p, e, DEAD);
-	sem_post(e->forks);
+	pthread_mutex_unlock(p->left_fork);
 	e->all_alive = 0;
 	return ;
 }
