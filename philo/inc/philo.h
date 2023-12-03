@@ -6,211 +6,100 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:37:25 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/01 21:34:22 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/03 17:16:13 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <fcntl.h>
 # include <pthread.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <sys/stat.h>
 # include <sys/time.h>
-# include <sys/wait.h>
-# include <time.h>
-# include <string.h>
 # include <unistd.h>
+/**/
 
-typedef pthread_t	t_th;
-typedef pthread_mutex_t t_mu;
-
-# define MSG "Usage:\nt./philo number_of_philosophers time_to_die time_to_eat \
-time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
-
-typedef struct s_etq
+typedef struct s_philo
 {
-	int				nb_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				must_eat;
-	time_t			start;
-	t_mu			*mu_f;
-	t_mu			mu_p;
-	t_mu			mu_e;
-}					t_etq;
+	int					id;
+	bool				full;
+	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		eating;
+	int					nb_meals;
+	long long			meal_time;
+	pthread_t			thread;
+	struct s_etiquette	*rules;
+}						t_philo;
 
-
-typedef struct s_ph
+typedef struct s_etiquette
 {
-	int             id;
-	int             left;
-	int             right;
-	int				meals;
-	int 		   enough;
-	time_t			time;
-	t_th            fa;
-	t_th			th;
-	t_etq          *e;
-}					t_ph;
-
-typedef enum e_exit
-{
-	VALID,
-	INVALID,
-}					t_exit;
-
-typedef enum e_status
+	int					nb_philo;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+	int					must_eat;
+	int 				stop;
+	int					total_meals;
+	pthread_t			checker;
+	long long			start_time;
+	pthread_mutex_t		*forks;
+	pthread_mutex_t     check;
+	pthread_mutex_t		print;
+	t_philo				*philos;
+}						t_etiquette;
+/**/
+typedef enum e_ph_status
 {
 	FORK,
 	DEAD,
 	THINK,
 	EAT,
-	SLEEP,
-	FULL,
-}					t_status;
+	SLEEP
+}						t_ph_status;
 
-void   *fmemset(void *s, int c, size_t n);
-int 	fcalloc(void **ptr, size_t count, size_t size);
-void   ffree(void *ptr);
+int is_running(t_etiquette *e);
+void stopping(t_etiquette *e);
 
-int					fatoi(char *str, int *val);
+/*ESSENTIALS*/
+/*@brief Check the input arguments for 
+ * correctness*/
+int						argparser(int argc, char *av[]);
+/*@brief initializes the main 
+ * structures used by the program*/
+int						set_table(t_etiquette *e, char *argv[], int argc);
+/*@brief Creates and joins the threads*/
+int						banquet(t_etiquette *e);
+/*@brif Destroy the mutexes and free any 
+ * allocated structures or arrays*/
+int						laundry(t_etiquette *e);
+/*@brief Routine for the dead of full
+ checker responsible fot checking if the philosophers
+ are dead or full*/
+void					*checker(void *arg);
+void					*strt_rtn(void *arg);
 
-/**
- * @brief Function to handle a bad exit for a philosopher.
- * 
- * This function is responsible for handling a bad exit for a philosopher.
- * It takes a pointer to a `t_ph` structure as a parameter.
- * 
- * @param philo A pointer to a `t_ph` structure representing the philosopher.
- * @return The exit status of the function.
- */
-t_exit				bad_exit(t_ph *philo);
+/*-----------ACTIONS-----------------------*/
+/*@brief sleeps periodically and checks 
+ * the all_alive flag for the banquet's end*/
+void					_sleep(t_etiquette *e, time_t time_to_spend);
 
-/**
- * @brief Function to handle a good exit for a philosopher.
- * 
- * This function is responsible for handling a good exit for a philosopher.
- * It takes a pointer to a `t_ph` structure as a parameter.
- * 
- * @param philo A pointer to a `t_ph` structure representing the philosopher.
- * @return The exit status of the function.
- */
-t_exit				good_exit(t_ph *philo);
-
-/**
- * @brief Logs the status of a philosopher.
- *
- * This function logs the status of a philosopher identified by the t_ph
- * structure pointer 'e'.
- * The status parameter represents the current status of the philosopher.
- *
- * @param t_ph A pointer to the t_ph structure representing the philosopher.
- * @param status The status of the philosopher.
- * @return int Returns 0 on success, 1 on failure.
- */
-int					log_status(t_ph *philo, t_status status);
-
-/**
- * @brief Timer function that returns the current time in seconds.
- *
- * This function takes a pointer to a time_t variable and updates it 
- * with the current time in seconds.
- *
- * @param val Pointer to a time_t variable to store the current time.
- * @return Returns 0 on success, 1 on failure.
- */
-int					timer(time_t *val);
-
-/**
- * @brief Calculates the time spent between the start and limit time.
- *
- * This function calculates the time spent between the start and limit time
- * and updates the `e` structure with the result.
- *
- * @param e     Pointer to the `t_etq` structure to update.
- * @param start The start time.
- * @param limit The limit time.
- */
-void				lapse(t_ph *philo, time_t start, time_t limit);
-
-/**
- * @brief Function that checks if the philosopher hasn't eaten.
- * 
- * This function represents a thread that simulates a philosopher 
- * experiencing famine.
- * It takes a void pointer as an argument and returns a void pointer.
- * 
- * @param arg The argument passed to the thread.
- * @return void* The return value of the thread.
- */
-void				*famine(void *arg);
-
-/**
- * @brief Takes a fork for the philosopher.
- *
- * This function is responsible for a philosopher taking a fork.
- * It is called when a philosopher wants to eat.
- *
- * @param philo The pointer to the philosopher's data structure.
- */
-void				take_fork(t_ph *philo);
-
-/**
- * @brief Releases a fork.
- *
- * This function is used to release a fork after a philosopher has 
- * finished eating.
- *
- * @param philo The pointer to the t_phstructure representing 
- * the philosopher.
- */
-void				put_fork(t_ph *philo);
-
-/**
- * @brief Function to simulate the eating action of a philosopher.
- *
- * This function represents the eating action of a philosopher.
- * It takes a pointer to a structure of type t_ph as a parameter.
- *
- * @param e Pointer to a t_phstructure representing the philosopher.
- */
-void				ph_eat(t_ph *philo);
-
-/**
- * @brief Function to simulate the sleeping action of a philosopher.
- *
- * This function represents the sleeping action of a philosopher.
- * It takes a pointer to a structure of type t_ph as a parameter.
- * 
- * @param philo The pointer to the t_ph struct.
- */
-void				ph_sleep(t_ph *philo);
-
-/**
- * @brief Function to simulate the thinking action of a philosopher.
- *
- * This function represents the thinking action of a philosopher.
- * It takes a pointer to a structure of type t_ph as a parameter.
- * 
- * @param philo The pointer to the t_ph struct.
- */
-void				ph_think(t_ph *philo);
-
-
-/**
- * @brief Executes the routine for a philosopher.
- *
- * This function is responsible for executing the routine of a philosopher.
- * It takes a pointer to a `t_ph` structure as a parameter.
- *
- * @param philo A pointer to a `t_ph` structure representing the philosopher.
- */
-
-void				*routine(void *arg);
-
+/* @brief entire lifetime of philosophers
+ * eats, sleeps and thinks*/
+void					life(t_philo *p, t_etiquette *e);
+int						death(t_philo *p, t_etiquette *e);
+void					*solo_dolo(t_etiquette *e, t_philo *p);
+/*-----------------UTILS--------------------*/
+/*@brief Converts the string received 
+ * if numeric to to numeric format type*/
+int						ft_atoi(const char *str);
+/*@brief returns the time in milliseconds*/
+long long				get_timestamp();
+/*Return logs the status for 
+ * what the philosopher is 
+ * currently doing*/
+void					log_status(t_philo *p, t_etiquette *e,
+							t_ph_status status);
 #endif

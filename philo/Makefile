@@ -10,14 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 OBJ_DIR    = ./obj
-SRCS       = src/ffree.c src/fmemset.c src/fcalloc.c src/fatoi.c  \
-		     src/exit.c  src/log.c  src/timer.c src/forks.c       \
-			 src/actions.c src/threads.c  src/philo.c
+SRCS       = src/banquet.c src/utils.c src/set_table.c src/actions.c\
+			 src/argparser.c src/philo.c src/routines.c src/control.c
 OBJS       = ${SRCS:src/%.c=$(OBJ_DIR)/%.o}
 INCS 	   = inc/
-NAME       = philo_bonus
+NAME       = philo
 CC         = cc
-CFLAGS     = -g -Wall -Wextra -Werror
+CFLAGS     = -g -Wall -Wextra -Werror -fsanitize=thread
 LDFLAGS    = -lpthread
 RM         = rm -rf
 

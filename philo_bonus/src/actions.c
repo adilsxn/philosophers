@@ -3,35 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acuva-nu <acuva-nu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: acuva-nu <acuva-nu@student.42lisboa.com>    +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 14:25:49 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/01 14:51:18 by acuva-nu         ###   ########.fr       */
+/*   Created: 2023/08/07 12:13:13 by acuva-nu          #+#    #+#             */
+/*   Updated: 2023/08/07 12:13:13 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo_bonus.h"
+#include <semaphore.h>
 
-void	ph_eat(t_etq *e)
+void	life(t_philo *p, t_etiquette *e)
 {
-	if (log_status(e, EAT) || timer(&e->philos[e->id].time))
-		sem_post(e->sem_e);
-	(e->philos[e->id].meals)++;
-	lapse(e, e->philos[e->id].time, e->time_to_eat);
-	if (e->must_eat && e->philos[e->id].meals == e->must_eat)
-		if (sem_post(e->sem_c) == -1)
-			sem_post(e->sem_e);
+	sem_wait(e->forks);
+	log_status(p, e, FORK);
+	if (e->nb_philo == 1)
+		solo_dolo(e, p);
+	sem_wait(e->forks);
+	log_status(p, e, FORK);
+    sem_wait(e->superv);
+	p->meal_time = get_timestamp();
+	log_status(p, e, EAT);
+	p->nb_meals++;
+    sem_post(e->superv);
+	usleep(e->time_to_eat * 1000);
+	sem_post(e->forks);
+	sem_post(e->forks);
 }
 
-void	ph_sleep(t_etq *e)
+int	death(t_philo *p, t_etiquette *e)
 {
-	if (log_status(e, SLEEP))
-		sem_post(e->sem_e);
-	lapse(e, 0, e->time_to_sleep);
+	if (get_timestamp() - p->meal_time > e->time_to_die)
+	{
+		log_status(p, e, DEAD);
+		e->all_alive = 0;
+		exit(1);
+	}
+	return (0);
 }
 
-void	ph_think(t_etq *e)
+void	delayed_start(t_philo *p)
 {
-	if (log_status(e, THINK))
-		sem_post(e->sem_e);
+	if (p->id % 2)
+		usleep(1000);
 }
