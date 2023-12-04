@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:37:25 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/03 17:16:13 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/04 17:30:13 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_etiquette
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat;
-	int 				stop;
+	int 				stop_flag;
 	int					total_meals;
 	pthread_t			checker;
 	long long			start_time;
@@ -57,12 +57,14 @@ typedef enum e_ph_status
 	DEAD,
 	THINK,
 	EAT,
-	SLEEP
+	SLEEP,
+	DEBUG
 }						t_ph_status;
 
-int is_running(t_etiquette *e);
-void stopping(t_etiquette *e);
+int is_flag_on(t_etiquette *e);
+void set_stop_flag(t_etiquette *e, int flag);
 
+void equal_start(long long time);
 /*ESSENTIALS*/
 /*@brief Check the input arguments for 
  * correctness*/
@@ -86,11 +88,6 @@ void					*strt_rtn(void *arg);
  * the all_alive flag for the banquet's end*/
 void					_sleep(t_etiquette *e, time_t time_to_spend);
 
-/* @brief entire lifetime of philosophers
- * eats, sleeps and thinks*/
-void					life(t_philo *p, t_etiquette *e);
-int						death(t_philo *p, t_etiquette *e);
-void					*solo_dolo(t_etiquette *e, t_philo *p);
 /*-----------------UTILS--------------------*/
 /*@brief Converts the string received 
  * if numeric to to numeric format type*/

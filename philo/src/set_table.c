@@ -24,9 +24,8 @@ static int	init_etiq(t_etiquette *e, char **av, int ac)
 	e->time_to_eat = ft_atoi(av[3]);
 	e->time_to_sleep = ft_atoi(av[4]);
 	e->must_eat = -1;
-	e->stop = 0;
 	e->total_meals = 0;
-	e->start_time = get_timestamp(e);
+	//e->start_time = get_timestamp(e);
 	if (ac == 6)
 		e->must_eat = ft_atoi(av[5]);
 	return (0);
@@ -67,6 +66,11 @@ static int	init_phil(t_etiquette *e)
 		e->philos[i].thread = 0;
 		e->philos[i].left_fork = e->forks + i;
 		e->philos[i].right_fork = e->forks + ((i + 1) % e->nb_philo);
+		if (i % 2)
+		{
+			e->philos[i].left_fork  = e->forks + ((i + 1) % e->nb_philo);
+			e->philos[i].right_fork = e->forks + i;  
+		}
 		e->philos[i].meal_time = e->start_time;
 		e->philos[i].rules = e;
 	}

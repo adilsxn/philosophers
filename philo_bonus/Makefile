@@ -11,12 +11,12 @@
 # **************************************************************************** #
 OBJ_DIR    = ./obj
 SRCS       = src/banquet.c src/utils.c src/set_table.c src/actions.c\
-			 src/argparser.c src/philo.c src/routines.c
+			 src/argparser.c src/philo_bonus.c src/routines.c
 OBJS       = ${SRCS:src/%.c=$(OBJ_DIR)/%.o}
 INCS 	   = inc/
 NAME       = philo
 CC         = cc
-CFLAGS     = -g -Wall -Wextra -Werror 
+CFLAGS     = -g -Wall -Wextra -Werror -fsanitize=thread
 LDFLAGS    = -lpthread
 RM         = rm -rf
 
