@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:37:25 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/04 17:30:13 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:04:59 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,5 @@ long long				get_timestamp();
  * what the philosopher is 
  * currently doing*/
 void					log_status(t_philo *p, t_etiquette *e,
-							t_ph_status status);
+							t_ph_status status, int flag);
 #endif

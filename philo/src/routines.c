@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:05:08 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/04 17:44:00 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:26:20 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 static void	life(t_philo *p, t_etiquette *e)
 {
 	pthread_mutex_lock(p->left_fork);
-	log_status(p, e, FORK);
+	log_status(p, e, FORK, 0);
 	pthread_mutex_lock(p->right_fork);
-	log_status(p, e, FORK);
-	log_status(p, e, EAT);
+	log_status(p, e, FORK, 0);
+	log_status(p, e, EAT, 0);
 	pthread_mutex_lock(&p->eating);
 	p->meal_time = get_timestamp();
 	pthread_mutex_unlock(&p->eating);
@@ -29,7 +29,7 @@ static void	life(t_philo *p, t_etiquette *e)
 		p->nb_meals++;
 		pthread_mutex_unlock(&p->eating);
 	}
-	log_status(p, e, SLEEP);
+	log_status(p, e, SLEEP, 0);
 	pthread_mutex_unlock(p->left_fork);
 	pthread_mutex_unlock(p->right_fork);
 	_sleep(e, e->time_to_sleep);
@@ -51,15 +51,15 @@ static void ph_think(t_philo *p, int flag)
 	if (time_to_think > 600)
 		time_to_think = 200;
 	if (flag == 0)
-		log_status(p, p->rules, THINK);
+		log_status(p, p->rules, THINK, 0);
 	_sleep(p->rules, time_to_think);
 }
 static void	*solo_dolo(t_etiquette *e, t_philo *p)
 {
 	pthread_mutex_lock(p->left_fork);
-	log_status(p, e, FORK);
+	log_status(p, e, FORK, 0);
 	_sleep(e, e->time_to_die);
-	log_status(p, e, DEAD);
+	log_status(p, e, DEAD, 0);
 	pthread_mutex_unlock(p->left_fork);
 	return (NULL);
 }

@@ -6,12 +6,11 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:03:52 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/04 17:18:38 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:27:29 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
-#include <pthread.h>
 
 static int	create_threads(t_etiquette *e)
 {

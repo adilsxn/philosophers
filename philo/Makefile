@@ -11,7 +11,7 @@
 # **************************************************************************** #
 OBJ_DIR    = ./obj
 SRCS       = src/banquet.c src/ft_atoi.c src/log_status.c src/chrono.c src/set_table.c\
-			 src/actions.c src/argparser.c src/killer.c src/philo.c src/routines.c src/control.c
+			 src/argparser.c src/killer.c src/philo.c src/routines.c src/control.c
 OBJS       = ${SRCS:src/%.c=$(OBJ_DIR)/%.o}
 INCS 	   = inc/
 NAME       = philo

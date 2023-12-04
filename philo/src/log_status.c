@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:54:15 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/04 15:10:22 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:10:03 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static char	*get_status(t_ph_status status)
 	return ("ERROR");
 }
 
-void	log_status(t_philo *p, t_etiquette *e, t_ph_status status)
+void	log_status(t_philo *p, t_etiquette *e, t_ph_status status, int flag)
 {
 	long long tmp;
 	
 	pthread_mutex_lock(&e->print);
-	if (is_flag_on(e) == 1)
+	if (is_flag_on(e) == 1 && flag == 0)
 	{
 	 	pthread_mutex_unlock(&e->print);
 	 	return ;
