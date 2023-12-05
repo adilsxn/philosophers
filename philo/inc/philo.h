@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:37:25 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/04 22:04:59 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:16:39 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,15 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <limits.h>
 /**/
 
 typedef struct s_philo
 {
-	int					id;
-	bool				full;
-	pthread_mutex_t		*right_fork;
-	pthread_mutex_t		*left_fork;
+	unsigned int					id;
+	unsigned int					forks[2];
 	pthread_mutex_t		eating;
-	int					nb_meals;
+	unsigned int					nb_meals;
 	long long			meal_time;
 	pthread_t			thread;
 	struct s_etiquette	*rules;
@@ -42,7 +41,6 @@ typedef struct s_etiquette
 	int					time_to_sleep;
 	int					must_eat;
 	int 				stop_flag;
-	int					total_meals;
 	pthread_t			checker;
 	long long			start_time;
 	pthread_mutex_t		*forks;
@@ -53,7 +51,8 @@ typedef struct s_etiquette
 /**/
 typedef enum e_ph_status
 {
-	FORK,
+	FORK1,
+	FORK2,
 	DEAD,
 	THINK,
 	EAT,

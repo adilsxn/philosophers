@@ -6,25 +6,24 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:54:15 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/04 22:10:03 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/05 10:21:08 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-static char	*get_status(t_ph_status status)
+static void	get_status(t_ph_status status)
 {
 	if (status == THINK)
-		return ("\033[0;36m is thinking\033[0;0m");
-	if (status == EAT)
-		return ("\033[0;32m is eating\033[0;0m");
-	if (status == DEAD)
-		return ("\033[0;31m died\033[0;0m");
-	if (status == SLEEP)
-		return ("\033[0;35m is sleeping\033[0;0m");
-	if  (status == FORK)
-		return ("\033[1;33m has taken a fork\033[0;0m");
-	return ("ERROR");
+		printf("\033[0;36m is thinking\033[0;0m\n");
+	else if (status == EAT)
+		printf("\033[0;32m is eating\033[0;0m\n");
+	else if (status == DEAD)
+		printf("\033[0;31m died\033[0;0m\n");
+	else if (status == SLEEP)
+		printf("\033[0;35m is sleeping\033[0;0m\n");
+	else if  (status == FORK1 || status == FORK2)
+		printf("\033[1;33m has taken a fork\033[0;0m\n");
 }
 
 void	log_status(t_philo *p, t_etiquette *e, t_ph_status status, int flag)
@@ -38,6 +37,7 @@ void	log_status(t_philo *p, t_etiquette *e, t_ph_status status, int flag)
 	 	return ;
 	}
 	tmp = get_timestamp() - e->start_time;
-	printf("[%lld]\t%i\t%s\n", tmp, (p->id + 1), get_status(status));
+	printf("%lld\t%i\t", tmp, (p->id + 1));
+	get_status(status);
 	pthread_mutex_unlock(&e->print);
 }

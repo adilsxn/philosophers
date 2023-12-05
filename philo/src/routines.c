@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:05:08 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/04 22:26:20 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:54:15 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static void	life(t_philo *p, t_etiquette *e)
 {
-	pthread_mutex_lock(p->left_fork);
-	log_status(p, e, FORK, 0);
-	pthread_mutex_lock(p->right_fork);
-	log_status(p, e, FORK, 0);
+	pthread_mutex_lock(&e->forks[p->forks[0]]);
+	log_status(p, e, FORK1, 0);
+	pthread_mutex_lock(&e->forks[p->forks[1]]);
+	log_status(p, e, FORK2, 0);
 	log_status(p, e, EAT, 0);
 	pthread_mutex_lock(&p->eating);
 	p->meal_time = get_timestamp();
@@ -30,8 +30,8 @@ static void	life(t_philo *p, t_etiquette *e)
 		pthread_mutex_unlock(&p->eating);
 	}
 	log_status(p, e, SLEEP, 0);
-	pthread_mutex_unlock(p->left_fork);
-	pthread_mutex_unlock(p->right_fork);
+	pthread_mutex_unlock(&e->forks[p->forks[1]]);
+	pthread_mutex_unlock(&e->forks[p->forks[0]]);
 	_sleep(e, e->time_to_sleep);
 }
 
@@ -56,11 +56,11 @@ static void ph_think(t_philo *p, int flag)
 }
 static void	*solo_dolo(t_etiquette *e, t_philo *p)
 {
-	pthread_mutex_lock(p->left_fork);
-	log_status(p, e, FORK, 0);
+	pthread_mutex_lock(&e->forks[p->forks[0]]);
+	log_status(p, e, FORK1, 0);
 	_sleep(e, e->time_to_die);
 	log_status(p, e, DEAD, 0);
-	pthread_mutex_unlock(p->left_fork);
+	pthread_mutex_unlock(&e->forks[p->forks[0]]);
 	return (NULL);
 }
 
@@ -75,10 +75,10 @@ void	*strt_rtn(void *arg)
 	p->meal_time = e->start_time;
 	pthread_mutex_unlock(&p->eating);
 	equal_start(e->start_time);
-	if (p->id % 2)
-		ph_think(p, 1);
 	if (e->nb_philo == 1)
 		return(solo_dolo(e, p));
+	else if (p->id % 2)
+		ph_think(p, 1);
 	while (is_flag_on(e) == 0)
 	{
 		life(p, e);

@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:39:51 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/04 17:24:58 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/04 23:19:32 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_atoi(const char *str)
 {
 	int	sinal;
-	int	res;
+	unsigned long long	res;
 
 	res = 0;
 	sinal = 1;
@@ -34,5 +34,8 @@ int	ft_atoi(const char *str)
 		res = res * 10 + (*str - '0');
 		str++;
 	}
-	return ((int)(res * sinal));
+	res = res * sinal;
+	if (res > INT_MAX)
+		return (-1);
+	return ((int)res);
 }

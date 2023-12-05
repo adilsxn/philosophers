@@ -16,7 +16,7 @@ OBJS       = ${SRCS:src/%.c=$(OBJ_DIR)/%.o}
 INCS 	   = inc/
 NAME       = philo
 CC         = cc
-CFLAGS     = -g -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS     = -g -Wall -Wextra -Werror
 LDFLAGS    = -lpthread
 RM         = rm -rf
 

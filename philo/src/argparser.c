@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argparser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acuva-nu <acuva-nu@student.42lisboa.com>    +#+  +:+       +#+       */
+/*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:57:08 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/08/06 20:57:08 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/04 23:33:43 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,17 @@ static int	arenum(char *s)
 	return (0);
 }
 
+static int are_valid(char **av, int ac)
+{
+	int i;
+
+	i = 0;
+	while (++i < ac)
+		if (arenum(av[i]) || ft_atoi(av[i]) < 0)
+			return (1);
+	return (0);
+}
+
 int	argparser(int argc, char *av[])
 {
 	if (argc < 5 || argc > 6)
@@ -32,9 +43,8 @@ int	argparser(int argc, char *av[])
 		printf("[time_to_sleep] [number_of_times_each_philosophers_must_eat]\n");
 		return (1);
 	}
-	while (--argc > 0)
-		if (arenum(av[argc]))
-			return (printf("Error: Non numeric argument\n"), 2);
+	if (are_valid(av, argc))
+		return (printf("Error: Non numeric argument\n"), 2);
 	if (ft_atoi(av[1]) < 1 || ft_atoi(av[1]) > 201 || ft_atoi(av[2]) < 0
 		|| ft_atoi(av[3]) < 0 || ft_atoi(av[4]) < 0)
 		return (printf("Invalid parameters!\n"), 3);
