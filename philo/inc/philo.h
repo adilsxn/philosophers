@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:37:25 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/05 13:16:39 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/05 14:55:11 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_etiquette
 	t_philo				*philos;
 }						t_etiquette;
 /**/
-typedef enum e_ph_status
+typedef enum e_status
 {
 	FORK1,
 	FORK2,
@@ -58,7 +58,7 @@ typedef enum e_ph_status
 	EAT,
 	SLEEP,
 	DEBUG
-}						t_ph_status;
+}						t_status;
 
 int is_flag_on(t_etiquette *e);
 void set_stop_flag(t_etiquette *e, int flag);
@@ -96,6 +96,6 @@ long long				get_timestamp();
 /*Return logs the status for 
  * what the philosopher is 
  * currently doing*/
-void					log_status(t_philo *p, t_etiquette *e,
-							t_ph_status status, int flag);
+void					log_status(t_philo *p,
+							t_status status, int flag);
 #endif

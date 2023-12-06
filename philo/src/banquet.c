@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:03:52 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/05 10:29:07 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:35:27 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@ static int	create_threads(t_etiquette *e)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
 	e->start_time = get_timestamp() + (e->nb_philo * 2 * 10);
-	while (++i < e->nb_philo)
+	while (i < e->nb_philo)
 	{
 		if (pthread_create(&e->philos[i].thread, NULL, &strt_rtn, &e->philos[i]))
 			return (1);
+		i++;
 	}
 	if (e->nb_philo > 1)
 	{

@@ -65,8 +65,8 @@ static int	init_phil(t_etiquette *e)
 		e->philos[i].forks[1] = ((i + 1) % e->nb_philo);
 		if (i % 2)
 		{
-			e->philos[i].forks[1]  = ((i + 1) % e->nb_philo);
-			e->philos[i].forks[0] = i;
+			e->philos[i].forks[0]  = ((i + 1) % e->nb_philo);
+			e->philos[i].forks[1] = i;
 		}
 		e->philos[i].rules = e;
 	}

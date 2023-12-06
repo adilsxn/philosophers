@@ -6,21 +6,21 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:57:45 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/05 13:23:58 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:20:45 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-static int	death(t_philo *p, t_etiquette *e)
+static int	death(t_philo *p)
 {
     long long cur;
 
     cur = get_timestamp();
-	if ((cur - p->meal_time) >= e->time_to_die)
+	if ((cur - p->meal_time) >= p->rules->time_to_die)
 	{
-		set_stop_flag(e, 1);
-        log_status(p, e, DEAD, 1);
+		set_stop_flag(p->rules, 1);
+        log_status(p, DEAD, 1);
         pthread_mutex_unlock(&p->eating);
 		return (1);
 	}
@@ -37,12 +37,15 @@ static int is_final(t_etiquette *e)
 	 while (++i < e->nb_philo)
 	 {
 		pthread_mutex_lock(&e->philos[i].eating);
-		if (death(&e->philos[i], e) == 1)
+		if (death(&e->philos[i]) == 1)
 			return (1);
         if(e->must_eat != -1)
-        	if (e->philos[i].nb_meals < (unsigned int)e->must_eat)
-                    ate = 0;
-	pthread_mutex_unlock(&e->philos[i].eating);
+		{
+        	if (e->philos[i].nb_meals
+				< (unsigned int)e->must_eat)
+                ate = 0;
+		}
+		pthread_mutex_unlock(&e->philos[i].eating);
 	 }
 	if ((e->must_eat != -1) && ate == 1)
 	{
