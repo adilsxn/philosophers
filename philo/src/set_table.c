@@ -39,13 +39,12 @@ static int	init_mtx(t_etiquette *e)
 	while (--i >= 0)
 	{
 		if (pthread_mutex_init(&e->forks[i], NULL)
-		|| pthread_mutex_init(&e->philos[i].eating, NULL))
+			|| pthread_mutex_init(&e->philos[i].eating, NULL))
 			return (2);
 	}
-	if (pthread_mutex_init(&e->check, NULL) 
-	|| pthread_mutex_init(&e->print, NULL))
+	if (pthread_mutex_init(&e->check, NULL) || pthread_mutex_init(&e->print,
+			NULL))
 		return (2);
-
 	return (0);
 }
 
@@ -65,7 +64,7 @@ static int	init_phil(t_etiquette *e)
 		e->philos[i].forks[1] = ((i + 1) % e->nb_philo);
 		if (i % 2)
 		{
-			e->philos[i].forks[0]  = ((i + 1) % e->nb_philo);
+			e->philos[i].forks[0] = ((i + 1) % e->nb_philo);
 			e->philos[i].forks[1] = i;
 		}
 		e->philos[i].rules = e;

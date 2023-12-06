@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:57:08 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/04 23:33:43 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/06 15:46:56 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static int	arenum(char *s)
 	return (0);
 }
 
-static int are_valid(char **av, int ac)
+static int	are_valid(char **av, int ac)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (++i < ac)
@@ -38,9 +38,7 @@ int	argparser(int argc, char *av[])
 {
 	if (argc < 5 || argc > 6)
 	{
-		printf("Usage:\n");
-		printf("\t./philo [number of philosophers] [time_to_die] [time_to_eat]");
-		printf("[time_to_sleep] [number_of_times_each_philosophers_must_eat]\n");
+		printf(MSG);
 		return (1);
 	}
 	if (are_valid(av, argc))

@@ -14,7 +14,7 @@
 
 int	ft_atoi(const char *str)
 {
-	int	sinal;
+	int					sinal;
 	unsigned long long	res;
 
 	res = 0;

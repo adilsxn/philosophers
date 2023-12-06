@@ -20,7 +20,8 @@ static int	create_threads(t_etiquette *e)
 	e->start_time = get_timestamp() + (e->nb_philo * 2 * 10);
 	while (i < e->nb_philo)
 	{
-		if (pthread_create(&e->philos[i].thread, NULL, &strt_rtn, &e->philos[i]))
+		if (pthread_create(&e->philos[i].thread, NULL, &strt_rtn,
+				&e->philos[i]))
 			return (1);
 		i++;
 	}

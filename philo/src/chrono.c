@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:38:17 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/05 11:11:04 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/06 15:32:15 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ long long	get_timestamp(void)
 
 void	_sleep(t_etiquette *e, time_t time_to_spend)
 {
-	long long tmp;
+	long long	tmp;
 
 	tmp = get_timestamp() + time_to_spend;
-
 	while (get_timestamp() < tmp)
 	{
 		if (is_flag_on(e) == 1)
@@ -34,8 +33,8 @@ void	_sleep(t_etiquette *e, time_t time_to_spend)
 	}
 }
 
-void equal_start(long long time)
+void	equal_start(long long time)
 {
 	while (get_timestamp() < time)
-		continue;
+		continue ;
 }

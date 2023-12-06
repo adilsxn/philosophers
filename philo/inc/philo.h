@@ -6,28 +6,31 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:37:25 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/05 14:55:11 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/06 15:45:38 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <limits.h>
 # include <pthread.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
-# include <limits.h>
-/**/
+
+# define MSG "Usage:\n ./philo [number of philosophers] \
+[time_to_die] [time_to_eat] [time_to_sleep] \
+[number_of_times_each_philosophers_must_eat]\n"
 
 typedef struct s_philo
 {
-	unsigned int					id;
-	unsigned int					forks[2];
+	unsigned int		id;
+	unsigned int		forks[2];
 	pthread_mutex_t		eating;
-	unsigned int					nb_meals;
+	unsigned int		nb_meals;
 	long long			meal_time;
 	pthread_t			thread;
 	struct s_etiquette	*rules;
@@ -40,11 +43,11 @@ typedef struct s_etiquette
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat;
-	int 				stop_flag;
+	int					stop_flag;
 	pthread_t			checker;
 	long long			start_time;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t     check;
+	pthread_mutex_t		check;
 	pthread_mutex_t		print;
 	t_philo				*philos;
 }						t_etiquette;
@@ -60,10 +63,10 @@ typedef enum e_status
 	DEBUG
 }						t_status;
 
-int is_flag_on(t_etiquette *e);
-void set_stop_flag(t_etiquette *e, int flag);
+int						is_flag_on(t_etiquette *e);
+void					set_stop_flag(t_etiquette *e, int flag);
 
-void equal_start(long long time);
+void					equal_start(long long time);
 /*ESSENTIALS*/
 /*@brief Check the input arguments for 
  * correctness*/
@@ -92,10 +95,10 @@ void					_sleep(t_etiquette *e, time_t time_to_spend);
  * if numeric to to numeric format type*/
 int						ft_atoi(const char *str);
 /*@brief returns the time in milliseconds*/
-long long				get_timestamp();
+long long				get_timestamp(void);
 /*Return logs the status for 
  * what the philosopher is 
  * currently doing*/
-void					log_status(t_philo *p,
-							t_status status, int flag);
+void					log_status(t_philo *p, t_status status, int flag);
+
 #endif
