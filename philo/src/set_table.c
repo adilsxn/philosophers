@@ -23,7 +23,9 @@ static int	init_etiq(t_etiquette *e, char **av, int ac)
 	e->time_to_die = ft_atoi(av[2]);
 	e->time_to_eat = ft_atoi(av[3]);
 	e->time_to_sleep = ft_atoi(av[4]);
+	e->stop_flag = 0;
 	e->must_eat = -1;
+	e->start_time = 0;
 	if (ac == 6)
 		e->must_eat = ft_atoi(av[5]);
 	return (0);
@@ -60,6 +62,7 @@ static int	init_phil(t_etiquette *e)
 		e->philos[i].id = i;
 		e->philos[i].nb_meals = 0;
 		e->philos[i].thread = 0;
+		e->philos[i].meal_time = e->start_time;
 		e->philos[i].forks[0] = i;
 		e->philos[i].forks[1] = ((i + 1) % e->nb_philo);
 		if (i % 2)
