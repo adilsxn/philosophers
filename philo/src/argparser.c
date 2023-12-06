@@ -6,7 +6,7 @@
 /*   By: acuva-nu <acuva-nu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 20:57:08 by acuva-nu          #+#    #+#             */
-/*   Updated: 2023/12/06 15:46:56 by acuva-nu         ###   ########.fr       */
+/*   Updated: 2023/12/06 15:48:12 by acuva-nu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	argparser(int argc, char *av[])
 		return (1);
 	}
 	if (are_valid(av, argc))
-		return (printf("Error: Non numeric argument\n"), 2);
+		return (printf("Error: non numeric or > INT_MAX\n"), 2);
 	if (ft_atoi(av[1]) < 1 || ft_atoi(av[1]) > 201 || ft_atoi(av[2]) < 0
 		|| ft_atoi(av[3]) < 0 || ft_atoi(av[4]) < 0)
 		return (printf("Invalid parameters!\n"), 3);
